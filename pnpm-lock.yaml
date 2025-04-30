@@ -17,15 +17,15 @@ importers:
       concurrently:
         specifier: ^6.2.1
         version: 6.5.1
+      concurrently-repeat:
+        specifier: ^0.0.1
+        version: 0.0.1
       eslint:
         specifier: ^9.0.0
         version: 9.25.1
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@9.25.1)
-      new-port-cli:
-        specifier: ^1.0.0
-        version: 1.0.0
       prettier:
         specifier: ^3.2.5
         version: 3.5.3
@@ -75,6 +75,67 @@ importers:
         specifier: ^2.0.16
         version: 2.0.17(mermaid@11.6.0)(vitepress@1.6.3(@algolia/client-search@5.24.0)(@types/react@19.1.2)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.3))
 
+  example:
+    dependencies:
+      '@darksoil-studio/automerge-real-time-sessions':
+        specifier: workspace:^0.500.0
+        version: link:../packages/automerge-real-time-sessions
+      '@darksoil-studio/holochain-elements':
+        specifier: ^0.500.0
+        version: 0.500.0(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
+      '@darksoil-studio/holochain-signals':
+        specifier: ^0.500.0
+        version: 0.500.0
+      '@darksoil-studio/holochain-utils':
+        specifier: ^0.500.0
+        version: 0.500.0
+      '@darksoil-studio/profiles-provider':
+        specifier: ^0.500.0
+        version: 0.500.0(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
+      '@darksoil-studio/real-time-sessions-zome':
+        specifier: workspace:^0.500.0
+        version: link:../packages/real-time-sessions-zome
+      '@holochain/client':
+        specifier: ^0.19.0
+        version: 0.19.0
+      '@lit/context':
+        specifier: ^1.0.0
+        version: 1.1.5
+      '@lit/localize':
+        specifier: ^0.12.0
+        version: 0.12.2
+      '@mdi/js':
+        specifier: ^7.2.0
+        version: 7.4.47
+      '@msgpack/msgpack':
+        specifier: ^2.8.0
+        version: 2.8.0
+      '@shoelace-style/shoelace':
+        specifier: ^2.11.0
+        version: 2.20.1(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
+      lit:
+        specifier: ^3.0.0
+        version: 3.3.0
+    devDependencies:
+      '@custom-elements-manifest/analyzer':
+        specifier: ^0.10.3
+        version: 0.10.4
+      '@darksoil-studio/profiles-zome':
+        specifier: 0.500.0-rev.5f2939510eb1f1cfde83af3c0b460bf5eea03b87
+        version: 0.500.0-rev.5f2939510eb1f1cfde83af3c0b460bf5eea03b87(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
+      '@lit/localize-tools':
+        specifier: ^0.6.3
+        version: 0.6.10
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
+      typescript:
+        specifier: ^5.4.5
+        version: 5.8.3
+      vite:
+        specifier: ^4.0.0
+        version: 4.5.14
+
   packages/automerge-real-time-sessions:
     dependencies:
       '@automerge/automerge':
@@ -120,9 +181,6 @@ importers:
       '@custom-elements-manifest/analyzer':
         specifier: ^0.10.3
         version: 0.10.4
-      '@darksoil-studio/profiles-zome':
-        specifier: 0.500.0-rev.5f2939510eb1f1cfde83af3c0b460bf5eea03b87
-        version: 0.500.0-rev.5f2939510eb1f1cfde83af3c0b460bf5eea03b87(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
       '@lit/localize-tools':
         specifier: ^0.6.3
         version: 0.6.10
@@ -132,9 +190,6 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.8.3
-      vite:
-        specifier: ^4.0.0
-        version: 4.5.14
 
   packages/real-time-sessions-zome:
     dependencies:
@@ -175,9 +230,6 @@ importers:
       '@custom-elements-manifest/analyzer':
         specifier: ^0.10.3
         version: 0.10.4
-      '@darksoil-studio/profiles-zome':
-        specifier: 0.500.0-rev.5f2939510eb1f1cfde83af3c0b460bf5eea03b87
-        version: 0.500.0-rev.5f2939510eb1f1cfde83af3c0b460bf5eea03b87(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
       '@lit/localize-tools':
         specifier: ^0.6.3
         version: 0.6.10
@@ -187,9 +239,6 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.8.3
-      vite:
-        specifier: ^4.0.0
-        version: 4.5.14
 
   tests:
     dependencies:
@@ -1541,6 +1590,10 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
+  concurrently-repeat@0.0.1:
+    resolution: {integrity: sha512-9UR6DJRsn1D8tGjK6L7BR2cTkfTQXRJRokoaC3KQgthRBEKHwXJzWXt3EQ3V9hjaURHYX5vAeEjt5aWhCpvSwQ==}
+    hasBin: true
+
   concurrently@6.5.1:
     resolution: {integrity: sha512-FlSwNpGjWQfRwPLXvJ/OgysbBxPkWpiVjy1042b0U7on7S7qwwMIILRj7WTN1mTgqa582bG6NFuScOoh6Zgdag==}
     engines: {node: '>=10.0.0'}
@@ -2304,13 +2357,6 @@ packages:
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
-
-  new-port-cli@1.0.0:
-    resolution: {integrity: sha512-9uMPTw2loJJ5423n4GT2uW7y12IeqiLiuUsNaXHZb3pBWNQ/pCnSi8nJ/EHBEBO58FQszvH2YCMDoCh7pnXN4Q==}
-    hasBin: true
-
-  new-port@1.0.0:
-    resolution: {integrity: sha512-2rEL1cZj78LekYSfYHDGP7lIhrCauYbPy92QvEyfJcNzrXIuDjEMWlpxrgGic2BNM7S+viHn8ajuYx0b9UlJJQ==}
 
   non-layered-tidy-tree-layout@2.0.2:
     resolution: {integrity: sha512-gkXMxRzUH+PB0ax9dUN0yYF0S25BqeAYqhgMaLUFmpXLEk7Fcu8f4emJuOAY0V8kjDICxROIKsTAKsV/v355xw==}
@@ -4452,6 +4498,11 @@ snapshots:
 
   concat-map@0.0.1: {}
 
+  concurrently-repeat@0.0.1:
+    dependencies:
+      concurrently: 6.5.1
+      yargs: 16.2.0
+
   concurrently@6.5.1:
     dependencies:
       chalk: 4.1.2
@@ -5297,12 +5348,6 @@ snapshots:
   nanoid@3.3.11: {}
 
   natural-compare@1.4.0: {}
-
-  new-port-cli@1.0.0:
-    dependencies:
-      new-port: 1.0.0
-
-  new-port@1.0.0: {}
 
   non-layered-tidy-tree-layout@2.0.2:
     optional: true

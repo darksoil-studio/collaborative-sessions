@@ -1,26 +1,25 @@
 {
-  "name": "real-time-sessions-dev",
-  "private": true,
-  "scripts": {
-    "start": "hc s clean && pnpm build:happ && BOOTSTRAP_PORT=$(port) SIGNAL_PORT=$(port) UI_PORT=8888 concurrently -k \"pnpm -F @darksoil-studio/real-time-sessions-zome start\" \"AGENTS=${AGENTS:-2} pnpm launch\" \"hc playground\" \"pnpm local-services\"",
-    "launch": "echo pass | RUST_LOG=warn hc launch --piped -n $AGENTS workdir/real-time-sessions_test.happ --ui-port $UI_PORT network --bootstrap http://127.0.0.1:$BOOTSTRAP_PORT webrtc ws://127.0.0.1:$SIGNAL_PORT",
-    "local-services": "hc run-local-services --bootstrap-port $BOOTSTRAP_PORT --signal-port $SIGNAL_PORT",
-    "test": "pnpm build:happ && pnpm -F tests test",
-    "build:happ": "nix build -L .#real_time_sessions_test_happ.meta.debug -o workdir/real-time-sessions_test.happ"
-  },
-  "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "@eslint/js": "^9.0.0",
-    "concurrently": "^6.2.1",
-    "eslint": "^9.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "new-port-cli": "^1.0.0",
-    "prettier": "^3.2.5",
-    "typescript-eslint": "^8.0.0",
-    "typescript": "^5.4.5"
-  },
-  "type": "module",
-  "engines": {
-    "pnpm": ">=9.0.0"
-  }
+	"name": "real-time-sessions-dev",
+	"private": true,
+	"scripts": {
+		"start": "pnpm build:happ && UI_PORT=8888 concurrently -k \"pnpm -r --if-present build:watch\" \"pnpm -F example-zome start\" \"AGENTS=${AGENTS:-2} pnpm launch\" \"hc playground\"",
+		"launch": "concurrently-repeat  \"RUST_LOG=warn hc pilot  workdir/real-time-sessions_test.happ --ui-port $UI_PORT\" $AGENTS",
+		"test": "pnpm build:happ && pnpm -F tests test",
+		"build:happ": "nix build -L .#real_time_sessions_test_happ.meta.debug -o workdir/real-time-sessions_test.happ"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.0.0",
+		"@trivago/prettier-plugin-sort-imports": "^4.3.0",
+		"concurrently": "^6.2.1",
+		"concurrently-repeat": "^0.0.1",
+		"eslint": "^9.0.0",
+		"eslint-config-prettier": "^9.1.0",
+		"prettier": "^3.2.5",
+		"typescript": "^5.4.5",
+		"typescript-eslint": "^8.0.0"
+	},
+	"type": "module",
+	"engines": {
+		"pnpm": ">=9.0.0"
+	}
 }
