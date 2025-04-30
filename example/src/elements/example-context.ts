@@ -4,7 +4,7 @@ import { consume, provide } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { ExampleStoreContext } from '../context.js';
+import { exampleStoreContext } from '../context.js';
 import { ExampleClient } from '../example-client.js';
 import { ExampleStore } from '../example-store.js';
 
@@ -16,7 +16,7 @@ export class ExampleContext extends LitElement {
 	@consume({ context: appClientContext })
 	private client!: AppClient;
 
-	@provide({ context: ExampleStoreContext })
+	@provide({ context: exampleStoreContext })
 	@property({ type: Object })
 	store!: ExampleStore;
 
@@ -24,7 +24,7 @@ export class ExampleContext extends LitElement {
 	role!: string;
 
 	@property()
-	zome = 'real_time_sessions';
+	zome = 'example';
 
 	connectedCallback() {
 		super.connectedCallback();
