@@ -1,0 +1,27 @@
+---
+manifest_version: "1"
+name: real_time_sessions_test
+integrity:
+  network_seed: ~
+  properties: ~
+  zomes:
+    - name: real_time_sessions_integrity
+      hash: ~
+      bundled: "../target/wasm32-unknown-unknown/release/real_time_sessions_integrity.wasm"
+      dependencies: ~    
+    - name: profiles_integrity
+      hash: ~
+      bundled: <NIX PACKAGE>
+      dependencies: ~
+coordinator:
+  zomes:
+    - name: real_time_sessions
+      hash: ~
+      bundled: "../target/wasm32-unknown-unknown/release/real_time_sessions.wasm"
+      dependencies:
+        - name: real_time_sessions_integrity    
+    - name: profiles
+      hash: ~
+      bundled: <NIX PACKAGE>
+      dependencies:
+        - name: profiles_integrity
