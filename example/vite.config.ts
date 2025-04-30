@@ -1,7 +1,8 @@
 // vite.config.js
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite';
+import wasm from 'vite-plugin-wasm';
 
 export default defineConfig({
-  root: './demo',
+	root: './demo',
+	plugins: [wasm()],
 });
-
