@@ -1,27 +1,41 @@
----
-manifest_version: "1"
+manifest_version: '1'
 name: real_time_sessions_test
 integrity:
-  network_seed: ~
-  properties: ~
+  network_seed: null
+  properties: null
   zomes:
-    - name: real_time_sessions_integrity
-      hash: ~
-      bundled: "../target/wasm32-unknown-unknown/release/real_time_sessions_integrity.wasm"
-      dependencies: ~    
-    - name: profiles_integrity
-      hash: ~
-      bundled: <NIX PACKAGE>
-      dependencies: ~
+  - name: real_time_sessions_integrity
+    hash: null
+    bundled: ../target/wasm32-unknown-unknown/release/real_time_sessions_integrity.wasm
+    dependencies: null
+    dylib: null
+  - name: profiles_integrity
+    hash: null
+    bundled: <NIX PACKAGE>
+    dependencies: null
+    dylib: null
+  - name: example_integrity
+    hash: null
+    bundled: ../target/wasm32-unknown-unknown/release/example_integrity.wasm
+    dependencies: null
+    dylib: null
 coordinator:
   zomes:
-    - name: real_time_sessions
-      hash: ~
-      bundled: "../target/wasm32-unknown-unknown/release/real_time_sessions.wasm"
-      dependencies:
-        - name: real_time_sessions_integrity    
-    - name: profiles
-      hash: ~
-      bundled: <NIX PACKAGE>
-      dependencies:
-        - name: profiles_integrity
+  - name: real_time_sessions
+    hash: null
+    bundled: ../target/wasm32-unknown-unknown/release/real_time_sessions.wasm
+    dependencies:
+    - name: real_time_sessions_integrity
+    dylib: null
+  - name: profiles
+    hash: null
+    bundled: <NIX PACKAGE>
+    dependencies:
+    - name: profiles_integrity
+    dylib: null
+  - name: example
+    hash: null
+    bundled: ../target/wasm32-unknown-unknown/release/example.wasm
+    dependencies:
+    - name: example_integrity
+    dylib: null
