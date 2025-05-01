@@ -1,0 +1,389 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/context.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "realTimeSessionsStoreContext"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "realTimeSessionsStoreContext",
+          "declaration": {
+            "name": "realTimeSessionsStoreContext",
+            "module": "src/context.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./real-time-sessions-store.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./real-time-sessions-client.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./session-store.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./context.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./types.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/mocks.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "RealTimeSessionsZomeMock",
+          "superclass": {
+            "name": "ZomeMock",
+            "package": "@darksoil-studio/holochain-utils"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RealTimeSessionsZomeMock",
+          "declaration": {
+            "name": "RealTimeSessionsZomeMock",
+            "module": "src/mocks.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/real-time-sessions-client.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "RealTimeSessionsClient",
+          "members": [
+            {
+              "kind": "method",
+              "name": "sendSessionMessage",
+              "parameters": [
+                {
+                  "name": "sessionId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "peers",
+                  "type": {
+                    "text": "AgentPubKey[]"
+                  }
+                },
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "Uint8Array"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "ZomeClient",
+            "package": "@darksoil-studio/holochain-utils"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RealTimeSessionsClient",
+          "declaration": {
+            "name": "RealTimeSessionsClient",
+            "module": "src/real-time-sessions-client.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/real-time-sessions-store.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "RealTimeSessionsStore"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RealTimeSessionsStore",
+          "declaration": {
+            "name": "RealTimeSessionsStore",
+            "module": "src/real-time-sessions-store.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/session-store.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "SessionStore",
+          "members": [
+            {
+              "kind": "field",
+              "name": "peers",
+              "default": "new Signal.State<HoloHashMap<AgentPubKey, PeerState>>( new HoloHashMap(), )"
+            },
+            {
+              "kind": "field",
+              "name": "activePeers",
+              "default": "new Signal.Computed(() => Array.from(this.peers.get().keys()))"
+            },
+            {
+              "kind": "method",
+              "name": "sendMessage",
+              "parameters": [
+                {
+                  "name": "peers",
+                  "type": {
+                    "text": "AgentPubKey[]"
+                  }
+                },
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "MESSAGES"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "join"
+            },
+            {
+              "kind": "method",
+              "name": "leave"
+            }
+          ],
+          "superclass": {
+            "name": "EventEmitter",
+            "package": "eventemitter3"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "SessionStore",
+          "declaration": {
+            "name": "SessionStore",
+            "module": "src/session-store.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/types.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "locales/locales.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "sourceLocale",
+          "default": "`en`",
+          "description": "The locale code that templates in this source code are written in."
+        },
+        {
+          "kind": "variable",
+          "name": "targetLocales",
+          "type": {
+            "text": "array"
+          },
+          "default": "[ , ]",
+          "description": "The other locale codes that this application is localized into. Sorted\nlexicographically."
+        },
+        {
+          "kind": "variable",
+          "name": "allLocales",
+          "type": {
+            "text": "array"
+          },
+          "default": "[ `en`, ]",
+          "description": "All valid project locale codes. Sorted lexicographically."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "sourceLocale",
+          "declaration": {
+            "name": "sourceLocale",
+            "module": "locales/locales.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "targetLocales",
+          "declaration": {
+            "name": "targetLocales",
+            "module": "locales/locales.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "allLocales",
+          "declaration": {
+            "name": "allLocales",
+            "module": "locales/locales.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/real-time-sessions-context.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "RealTimeSessionsContext",
+          "members": [
+            {
+              "kind": "field",
+              "name": "client",
+              "type": {
+                "text": "AppClient"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "store",
+              "type": {
+                "text": "RealTimeSessionsStore"
+              },
+              "attribute": "store"
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "role"
+            },
+            {
+              "kind": "field",
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'real_time_sessions'",
+              "attribute": "zome"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "store",
+              "type": {
+                "text": "RealTimeSessionsStore"
+              },
+              "fieldName": "store"
+            },
+            {
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "role"
+            },
+            {
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'real_time_sessions'",
+              "fieldName": "zome"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "real-time-sessions-context",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RealTimeSessionsContext",
+          "declaration": {
+            "name": "RealTimeSessionsContext",
+            "module": "src/elements/real-time-sessions-context.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "real-time-sessions-context",
+          "declaration": {
+            "name": "RealTimeSessionsContext",
+            "module": "src/elements/real-time-sessions-context.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

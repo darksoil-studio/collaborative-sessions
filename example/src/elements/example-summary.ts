@@ -1,10 +1,3 @@
-import { next as A } from '@automerge/automerge';
-import {
-	DocHandle,
-	basicSchemaAdapter,
-	pmDocFromSpans,
-	syncPlugin,
-} from '@automerge/prosemirror';
 import {
 	hashProperty,
 	sharedStyles,
@@ -25,9 +18,6 @@ import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { ref } from 'lit/directives/ref.js';
-import { exampleSetup } from 'prosemirror-example-setup';
-import { EditorState, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 
 import { exampleStoreContext } from '../context.js';
 import { ExampleStore } from '../example-store.js';
@@ -52,37 +42,11 @@ export class ExampleSummary extends SignalWatcher(LitElement) {
 	@consume({ context: exampleStoreContext, subscribe: true })
 	exampleStore!: ExampleStore;
 
-	prosemirror: EditorView | undefined;
-
 	renderSummary(entryRecord: EntryRecord<Example>) {
 		return html`
-			<div
-				${ref(el => {
-					if (!el || !this.prosemirror) return;
-
-					const adapter = basicSchemaAdapter;
-
-					const handle: DocHandle<{ text: string }> =
-						buildRealTimeSessionDocHandle(encodeHashToBase64(this.exampleHash));
-
-					this.prosemirror = new EditorView(el, {
-						state: EditorState.create({
-							// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-							doc: pmDocFromSpans(
-								adapter,
-								A.spans(handle.docSync()!, ['text']),
-							),
-							plugins: [
-								...exampleSetup({ schema: adapter.schema }),
-								syncPlugin({ adapter, handle, path: ['text'] }),
-							],
-						}),
-						dispatchTransaction: (tx: Transaction) => {
-							this.prosemirror!.updateState(this.prosemirror!.state.apply(tx));
-						},
-					});
-				})}
-			></div>
+			<collaborative-prosemirror
+				.sessionId=${encodeHashToBase64(this.exampleHash)}
+			></collaborative-prosemirror>
 		`;
 	}
 

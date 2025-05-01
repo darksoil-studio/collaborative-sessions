@@ -60,15 +60,129 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/doc-handle.ts",
+      "path": "src/index.ts",
       "declarations": [],
-      "exports": []
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./network-adapter.js"
+          }
+        }
+      ]
     },
     {
       "kind": "javascript-module",
-      "path": "src/index.ts",
-      "declarations": [],
-      "exports": []
+      "path": "src/network-adapter.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "RealTimeSessionsNetworkAdapter",
+          "members": [
+            {
+              "kind": "field",
+              "name": "sessions",
+              "type": {
+                "text": "Record<string, SessionStore<Message>>"
+              },
+              "default": "{}"
+            },
+            {
+              "kind": "method",
+              "name": "isReady",
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "whenReady",
+              "return": {
+                "type": {
+                  "text": "Promise<void>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "connect",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "peerId",
+                  "type": {
+                    "text": "PeerId"
+                  }
+                },
+                {
+                  "name": "peerMetadata",
+                  "optional": true,
+                  "type": {
+                    "text": "PeerMetadata"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "disconnect",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "joinSession",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "documentId",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "send",
+              "parameters": [
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "Message"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "AutomergeNetworkAdapter",
+            "package": "@automerge/automerge-repo/slim"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RealTimeSessionsNetworkAdapter",
+          "declaration": {
+            "name": "RealTimeSessionsNetworkAdapter",
+            "module": "src/network-adapter.ts"
+          }
+        }
+      ]
     }
   ]
 }
