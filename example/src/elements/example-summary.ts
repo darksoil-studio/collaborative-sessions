@@ -17,11 +17,11 @@ import '@shoelace-style/shoelace/dist/components/card/card.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { ref } from 'lit/directives/ref.js';
 
 import { exampleStoreContext } from '../context.js';
 import { ExampleStore } from '../example-store.js';
 import { Example } from '../types.js';
+import './collaborative-prosemirror.js';
 
 /**
  * @element example-summary
@@ -45,7 +45,8 @@ export class ExampleSummary extends SignalWatcher(LitElement) {
 	renderSummary(entryRecord: EntryRecord<Example>) {
 		return html`
 			<collaborative-prosemirror
-				.sessionId=${encodeHashToBase64(this.exampleHash)}
+				.documentId=${entryRecord.entry.document_id}
+				style="flex: 1"
 			></collaborative-prosemirror>
 		`;
 	}

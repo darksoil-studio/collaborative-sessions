@@ -4,37 +4,9 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/context.ts",
-      "declarations": [
-        {
-          "kind": "variable",
-          "name": "realTimeSessionsStoreContext"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "realTimeSessionsStoreContext",
-          "declaration": {
-            "name": "realTimeSessionsStoreContext",
-            "module": "src/context.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "src/index.ts",
       "declarations": [],
       "exports": [
-        {
-          "kind": "js",
-          "name": "*",
-          "declaration": {
-            "name": "*",
-            "package": "./real-time-sessions-store.js"
-          }
-        },
         {
           "kind": "js",
           "name": "*",
@@ -49,14 +21,6 @@
           "declaration": {
             "name": "*",
             "package": "./session-store.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "*",
-          "declaration": {
-            "name": "*",
-            "package": "./context.js"
           }
         },
         {
@@ -105,6 +69,24 @@
           "members": [
             {
               "kind": "method",
+              "name": "sendPresenceSignal",
+              "parameters": [
+                {
+                  "name": "sessionId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "peers",
+                  "type": {
+                    "text": "AgentPubKey[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
               "name": "sendSessionMessage",
               "parameters": [
                 {
@@ -141,27 +123,6 @@
           "declaration": {
             "name": "RealTimeSessionsClient",
             "module": "src/real-time-sessions-client.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/real-time-sessions-store.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "RealTimeSessionsStore"
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RealTimeSessionsStore",
-          "declaration": {
-            "name": "RealTimeSessionsStore",
-            "module": "src/real-time-sessions-store.ts"
           }
         }
       ]
@@ -205,10 +166,6 @@
             },
             {
               "kind": "method",
-              "name": "join"
-            },
-            {
-              "kind": "method",
               "name": "leave"
             }
           ],
@@ -234,6 +191,34 @@
       "path": "src/types.ts",
       "declarations": [],
       "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utils.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "effect",
+          "parameters": [
+            {
+              "name": "cb",
+              "type": {
+                "text": "() => void"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "effect",
+          "declaration": {
+            "name": "effect",
+            "module": "src/utils.ts"
+          }
+        }
+      ]
     },
     {
       "kind": "javascript-module",
@@ -287,100 +272,6 @@
           "declaration": {
             "name": "allLocales",
             "module": "locales/locales.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/elements/real-time-sessions-context.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "RealTimeSessionsContext",
-          "members": [
-            {
-              "kind": "field",
-              "name": "client",
-              "type": {
-                "text": "AppClient"
-              },
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "store",
-              "type": {
-                "text": "RealTimeSessionsStore"
-              },
-              "attribute": "store"
-            },
-            {
-              "kind": "field",
-              "name": "role",
-              "type": {
-                "text": "string"
-              },
-              "attribute": "role"
-            },
-            {
-              "kind": "field",
-              "name": "zome",
-              "type": {
-                "text": "string"
-              },
-              "default": "'real_time_sessions'",
-              "attribute": "zome"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "store",
-              "type": {
-                "text": "RealTimeSessionsStore"
-              },
-              "fieldName": "store"
-            },
-            {
-              "name": "role",
-              "type": {
-                "text": "string"
-              },
-              "fieldName": "role"
-            },
-            {
-              "name": "zome",
-              "type": {
-                "text": "string"
-              },
-              "default": "'real_time_sessions'",
-              "fieldName": "zome"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "real-time-sessions-context",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "RealTimeSessionsContext",
-          "declaration": {
-            "name": "RealTimeSessionsContext",
-            "module": "src/elements/real-time-sessions-context.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "real-time-sessions-context",
-          "declaration": {
-            "name": "RealTimeSessionsContext",
-            "module": "src/elements/real-time-sessions-context.ts"
           }
         }
       ]

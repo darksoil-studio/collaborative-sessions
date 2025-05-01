@@ -131,6 +131,9 @@ importers:
       prosemirror-example-setup:
         specifier: ^1.2.2
         version: 1.2.3
+      prosemirror-menu:
+        specifier: ^1.2.5
+        version: 1.2.5
       prosemirror-model:
         specifier: ^1.21.0
         version: 1.25.1
@@ -174,6 +177,9 @@ importers:
       '@automerge/automerge-repo':
         specifier: 2.0.0-beta.1
         version: 2.0.0-beta.1
+      '@automerge/automerge-repo-storage-indexeddb':
+        specifier: 2.0.0-beta.1
+        version: 2.0.0-beta.1
       '@darksoil-studio/holochain-elements':
         specifier: ^0.500.0
         version: 0.500.0(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
@@ -207,9 +213,15 @@ importers:
       '@shoelace-style/shoelace':
         specifier: ^2.11.0
         version: 2.20.1(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
+      eventemitter3:
+        specifier: ^5.0.1
+        version: 5.0.1
       lit:
         specifier: ^3.0.0
         version: 3.3.0
+      signal-polyfill:
+        specifier: ^0.2.2
+        version: 0.2.2
     devDependencies:
       '@custom-elements-manifest/analyzer':
         specifier: ^0.10.3
@@ -2759,6 +2771,9 @@ packages:
 
   signal-polyfill@0.1.2:
     resolution: {integrity: sha512-HT9d+L9NMiTzMxb/tU2Baym6129ROyRETSjvchvSkQa7wN0+SrG/IUlsaBLqKn2c+4mlze6CgQBEvgBjxOpiaQ==}
+
+  signal-polyfill@0.2.2:
+    resolution: {integrity: sha512-p63Y4Er5/eMQ9RHg0M0Y64NlsQKpiu6MDdhBXpyywRuWiPywhJTpKJ1iB5K2hJEbFZ0BnDS7ZkJ+0AfTuL37Rg==}
 
   simple-swizzle@0.2.2:
     resolution: {integrity: sha512-JA//kQgZtbuY83m+xT+tXJkmJncGMTFT+C+g2h2R9uxkYIrE2yy9sgmcLhCnw57/WSD+Eh3J97FPEDFnbXnDUg==}
@@ -5952,6 +5967,8 @@ snapshots:
   signal-exit@4.1.0: {}
 
   signal-polyfill@0.1.2: {}
+
+  signal-polyfill@0.2.2: {}
 
   simple-swizzle@0.2.2:
     dependencies:

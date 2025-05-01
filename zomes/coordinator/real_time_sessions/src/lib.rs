@@ -13,6 +13,7 @@ pub fn init(_: ()) -> ExternResult<InitCallbackResult> {
         access: CapAccess::Unrestricted,
         functions,
     })?;
+
     Ok(InitCallbackResult::Pass)
 }
 

@@ -4,56 +4,59 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "locales/locales.js",
+      "path": "src/document-store.ts",
       "declarations": [
         {
-          "kind": "variable",
-          "name": "sourceLocale",
-          "default": "`en`",
-          "description": "The locale code that templates in this source code are written in."
-        },
-        {
-          "kind": "variable",
-          "name": "targetLocales",
-          "type": {
-            "text": "array"
-          },
-          "default": "[ , ]",
-          "description": "The other locale codes that this application is localized into. Sorted\nlexicographically."
-        },
-        {
-          "kind": "variable",
-          "name": "allLocales",
-          "type": {
-            "text": "array"
-          },
-          "default": "[ `en`, ]",
-          "description": "All valid project locale codes. Sorted lexicographically."
+          "kind": "class",
+          "description": "",
+          "name": "DocumentStore",
+          "members": [
+            {
+              "kind": "field",
+              "name": "repo",
+              "type": {
+                "text": "Repo"
+              },
+              "default": "new Repo({ network: [new RealTimeSessionsNetworkAdapter(this.sessionStore)], storage: new IndexedDBStorageAdapter(), peerId: encodeHashToBase64( this.sessionStore.client.client.myPubKey, ) as PeerId, })"
+            },
+            {
+              "kind": "method",
+              "name": "createDocument",
+              "static": true,
+              "return": {
+                "type": {
+                  "text": "DocumentId"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "myPubKey",
+                  "type": {
+                    "text": "AgentPubKey"
+                  }
+                },
+                {
+                  "name": "initialValue",
+                  "type": {
+                    "text": "T"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "docHandle"
+            }
+          ]
         }
       ],
       "exports": [
         {
           "kind": "js",
-          "name": "sourceLocale",
+          "name": "DocumentStore",
           "declaration": {
-            "name": "sourceLocale",
-            "module": "locales/locales.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "targetLocales",
-          "declaration": {
-            "name": "targetLocales",
-            "module": "locales/locales.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "allLocales",
-          "declaration": {
-            "name": "allLocales",
-            "module": "locales/locales.js"
+            "name": "DocumentStore",
+            "module": "src/document-store.ts"
           }
         }
       ]
@@ -70,6 +73,14 @@
             "name": "*",
             "package": "./network-adapter.js"
           }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./document-store.js"
+          }
         }
       ]
     },
@@ -82,14 +93,6 @@
           "description": "",
           "name": "RealTimeSessionsNetworkAdapter",
           "members": [
-            {
-              "kind": "field",
-              "name": "sessions",
-              "type": {
-                "text": "Record<string, SessionStore<Message>>"
-              },
-              "default": "{}"
-            },
             {
               "kind": "method",
               "name": "isReady",
@@ -143,19 +146,6 @@
             },
             {
               "kind": "method",
-              "name": "joinSession",
-              "privacy": "private",
-              "parameters": [
-                {
-                  "name": "documentId",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
               "name": "send",
               "parameters": [
                 {
@@ -180,6 +170,62 @@
           "declaration": {
             "name": "RealTimeSessionsNetworkAdapter",
             "module": "src/network-adapter.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "locales/locales.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "sourceLocale",
+          "default": "`en`",
+          "description": "The locale code that templates in this source code are written in."
+        },
+        {
+          "kind": "variable",
+          "name": "targetLocales",
+          "type": {
+            "text": "array"
+          },
+          "default": "[ , ]",
+          "description": "The other locale codes that this application is localized into. Sorted\nlexicographically."
+        },
+        {
+          "kind": "variable",
+          "name": "allLocales",
+          "type": {
+            "text": "array"
+          },
+          "default": "[ `en`, ]",
+          "description": "All valid project locale codes. Sorted lexicographically."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "sourceLocale",
+          "declaration": {
+            "name": "sourceLocale",
+            "module": "locales/locales.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "targetLocales",
+          "declaration": {
+            "name": "targetLocales",
+            "module": "locales/locales.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "allLocales",
+          "declaration": {
+            "name": "allLocales",
+            "module": "locales/locales.js"
           }
         }
       ]

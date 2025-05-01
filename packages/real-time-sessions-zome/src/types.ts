@@ -18,10 +18,16 @@ export type RealTimeSessionsSignal = {
 	remote_signal: RemoteSignal;
 };
 
-export type RemoteSignal = {
-	type: 'SessionMessage';
-	session_message: SessionMessage;
-};
+export type RemoteSignal =
+	| {
+			type: 'Presence';
+			session_id: string;
+	  }
+	| {
+			type: 'SessionMessage';
+			session_id: string;
+			message: Uint8Array;
+	  };
 
 export interface SessionMessage {
 	session_id: string;

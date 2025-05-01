@@ -5,15 +5,16 @@ import {
 	PeerMetadata,
 } from '@automerge/automerge-repo/slim';
 import {
+	PeerJoinedPayload,
+	PeerMessagePayload,
 	RealTimeSessionsClient,
+	RealTimeSessionsStore,
 	SessionStore,
 } from '@darksoil-studio/real-time-sessions-zome';
-import { decodeHashFromBase64 } from '@holochain/client';
+import { decodeHashFromBase64, encodeHashToBase64 } from '@holochain/client';
 
 export class RealTimeSessionsNetworkAdapter extends AutomergeNetworkAdapter {
-	sessions: Record<string, SessionStore<Message>> = {};
-
-	constructor(public client: RealTimeSessionsClient) {
+	constructor(public sessionStore: SessionStore<Message>) {
 		super();
 	}
 
@@ -21,31 +22,33 @@ export class RealTimeSessionsNetworkAdapter extends AutomergeNetworkAdapter {
 		return true;
 	}
 
-	whenReady(): Promise<void> {
-		return Promise.resolve();
-	}
+	async whenReady(): Promise<void> {}
 
-	connect(peerId: PeerId, peerMetadata?: PeerMetadata): void {}
+	connect(peerId: PeerId, peerMetadata?: PeerMetadata): void {
+		this.sessionStore.on(
+			'peer-message',
+			(peerMessage: PeerMessagePayload<Message>) => {
+				this.emit('message', peerMessage.message);
+			},
+		);
+		this.sessionStore.on('peer-joined', (peer: PeerJoinedPayload) => {
+			this.emit('peer-candidate', {
+				peerId: encodeHashToBase64(peer.peer) as PeerId,
+				peerMetadata: {
+					isEphemeral: false,
+					storageId: undefined,
+				},
+			});
+		});
+	}
 
 	disconnect(): void {}
-
-	private joinSession(documentId: string) {
-		const sessionStore = new SessionStore<Message>(this.client, documentId);
-		sessionStore.on('peer-message', message => this.emit('message', message));
-		this.sessions[documentId] = sessionStore;
-	}
 
 	async send(message: Message) {
 		if (!message.documentId || !message.data) return; // TODO: whaaat?
 
-		if (!this.sessions[message.documentId]) {
-			this.joinSession(message.documentId);
-		}
-		const sessionStore = this.sessions[message.documentId];
-
 		// await sessionStore.join();
-
-		await sessionStore.sendMessage(
+		await this.sessionStore.sendMessage(
 			[decodeHashFromBase64(message.targetId)],
 			message,
 		);

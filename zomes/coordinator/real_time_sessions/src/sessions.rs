@@ -2,6 +2,23 @@ use hdk::prelude::*;
 use real_time_sessions_integrity::*;
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct SendPresenceSignalInput {
+    pub session_id: String,
+    pub peers: Vec<AgentPubKey>,
+}
+
+#[hdk_extern]
+pub fn send_presence_signal(input: SendPresenceSignalInput) -> ExternResult<()> {
+    send_remote_signal(
+        RemoteSignal::Presence {
+            session_id: input.session_id,
+        },
+        input.peers,
+    )?;
+    Ok(())
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SessionMessage {
     pub session_id: String,
     pub message: SerializedBytes,
@@ -17,7 +34,8 @@ pub struct SendSessionMessageInput {
 pub fn send_session_message(input: SendSessionMessageInput) -> ExternResult<()> {
     send_remote_signal(
         RemoteSignal::SessionMessage {
-            session_message: input.session_message,
+            session_id: input.session_message.session_id,
+            message: input.session_message.message,
         },
         input.peers,
     )?;
@@ -27,7 +45,13 @@ pub fn send_session_message(input: SendSessionMessageInput) -> ExternResult<()> 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum RemoteSignal {
-    SessionMessage { session_message: SessionMessage },
+    Presence {
+        session_id: String,
+    },
+    SessionMessage {
+        session_id: String,
+        message: SerializedBytes,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug)]

@@ -24,6 +24,13 @@ export class RealTimeSessionsClient extends ZomeClient<RealTimeSessionsSignal> {
 		super(client, roleName, zomeName);
 	}
 
+	async sendPresenceSignal(sessionId: string, peers: AgentPubKey[]) {
+		return this.callZome('send_presence_signal', {
+			session_id: sessionId,
+			peers,
+		});
+	}
+
 	async sendSessionMessage(
 		sessionId: string,
 		peers: AgentPubKey[],
