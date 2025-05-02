@@ -2,9 +2,8 @@
 	"name": "real-time-sessions-dev",
 	"private": true,
 	"scripts": {
-		"start": "pnpm build:happ && concurrently -k \"pnpm -r --if-present --parallel build:watch\" \"UI_PORT=8888 pnpm launch:agent\" \"UI_PORT=8889 pnpm launch:agent\" \"hc playground\"",
-		"launch:agent": " concurrently \"pnpm launch\" \"pnpm -F example-zome start\"",
-		"launch": "RUST_LOG=warn hc pilot  workdir/real-time-sessions_test.happ --ui-port $UI_PORT",
+		"start": "pnpm build:happ && UI_PORT=8888 concurrently -k \"pnpm -r --if-present --parallel build:watch\" \"AGENTS=${AGENTS:-2} pnpm launch\" \"pnpm -F example-zome start\" \"hc playground\"",
+		"launch": " concurrently-repeat \"RUST_LOG=warn hc pilot  workdir/real-time-sessions_test.happ --ui-port $UI_PORT\" $AGENTS",
 		"test": "pnpm build:happ && pnpm -F tests test",
 		"build:happ": "nix build -L .#real_time_sessions_test_happ.meta.debug -o workdir/real-time-sessions_test.happ"
 	},

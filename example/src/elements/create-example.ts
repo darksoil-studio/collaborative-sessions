@@ -20,12 +20,6 @@ import {
 	profilesStoreContext,
 } from '@darksoil-studio/profiles-zome';
 import {
-	RealTimeSessionsClient,
-	RealTimeSessionsStore,
-	SessionStore,
-	realTimeSessionsStoreContext,
-} from '@darksoil-studio/real-time-sessions-zome';
-import {
 	ActionHash,
 	AgentPubKey,
 	DnaHash,
@@ -76,15 +70,8 @@ export class CreateExample extends SignalWatcher(LitElement) {
 	form!: HTMLFormElement;
 
 	async createExample(fields: Partial<Example>) {
-		const documentId = DocumentStore.createDocument(
-			this.exampleStore.client.client.myPubKey,
-			{
-				text: fields.text,
-			},
-		);
 		const example: Example = {
 			text: fields.text!,
-			document_id: documentId,
 		};
 
 		try {

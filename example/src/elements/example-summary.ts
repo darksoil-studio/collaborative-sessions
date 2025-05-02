@@ -45,7 +45,7 @@ export class ExampleSummary extends SignalWatcher(LitElement) {
 	renderSummary(entryRecord: EntryRecord<Example>) {
 		return html`
 			<collaborative-prosemirror
-				.documentId=${entryRecord.entry.document_id}
+				.sessionId=${encodeHashToBase64(this.exampleHash)}
 				style="flex: 1"
 			></collaborative-prosemirror>
 		`;

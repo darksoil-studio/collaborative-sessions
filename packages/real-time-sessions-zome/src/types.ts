@@ -27,6 +27,10 @@ export type RemoteSignal =
 			type: 'SessionMessage';
 			session_id: string;
 			message: Uint8Array;
+	  }
+	| {
+			type: 'LeaveSession';
+			session_id: string;
 	  };
 
 export interface SessionMessage {

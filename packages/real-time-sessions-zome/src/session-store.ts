@@ -20,12 +20,19 @@ export interface PeerJoinedPayload {
 	peer: AgentPubKey;
 }
 
+export interface PeerLeftPayload {
+	peer: AgentPubKey;
+}
+
 export type SessionStoreEvents<MESSAGES> =
+	| {
+			'peer-joined': (payload: PeerJoinedPayload) => void;
+	  }
 	| {
 			'peer-message': (payload: PeerMessagePayload<MESSAGES>) => void;
 	  }
 	| {
-			'peer-joined': (payload: PeerJoinedPayload) => void;
+			'peer-left': (payload: PeerLeftPayload) => void;
 	  };
 
 export interface PeerState {
@@ -40,7 +47,11 @@ export class SessionStore<
 		new HoloHashMap(),
 	);
 
-	activePeers = new Signal.Computed(() => Array.from(this.peers.get().keys()));
+	get activePeers(): Array<AgentPubKey> {
+		return Array.from(this.peers.get().keys());
+	}
+
+	joined = true;
 
 	constructor(
 		public client: RealTimeSessionsClient,
@@ -52,6 +63,7 @@ export class SessionStore<
 		super();
 
 		client.onSignal(signal => {
+			if (!this.joined) return;
 			if (signal.remote_signal.session_id !== this.sessionId) return;
 
 			const acceptedPeers = this.acceptedPeers.get();
@@ -78,17 +90,26 @@ export class SessionStore<
 							peer: signal.provenance,
 						});
 					}
+					peers.set(signal.provenance, {
+						lastSeen: Date.now(),
+					});
 					break;
 				case 'SessionMessage':
 					this.emit('peer-message', {
 						peer: signal.provenance,
 						message: decode(signal.remote_signal.message) as MESSAGES,
 					});
+					peers.set(signal.provenance, {
+						lastSeen: Date.now(),
+					});
+					break;
+				case 'LeaveSession':
+					peers.delete(signal.provenance);
+					this.emit('peer-left', {
+						peer: signal.provenance,
+					});
 					break;
 			}
-			peers.set(signal.provenance, {
-				lastSeen: Date.now(),
-			});
 			this.peers.set(peers);
 		});
 
@@ -97,28 +118,39 @@ export class SessionStore<
 			const peers = this.acceptedPeers.get();
 			if (interval) clearInterval(interval);
 			interval = setInterval(() => {
-				this.client.sendPresenceSignal(this.sessionId, peers);
+				if (!this.joined) return;
+				this.client.sendPresenceSignal(
+					this.sessionId,
+					peers.filter(
+						peer =>
+							encodeHashToBase64(peer) !==
+							encodeHashToBase64(this.client.client.myPubKey),
+					),
+				);
 			}, 3000);
 		});
 	}
 
-	// async join() {
-	// 	await this.client.sendPresenceSignal(
-	// 		this.sessionId,
-	// 		this.acceptedPeers
-	// 			.get()
-	// 			.filter(
-	// 				p =>
-	// 					encodeHashToBase64(p) !==
-	// 					encodeHashToBase64(this.client.client.myPubKey),
-	// 			),
-	// 	);
-	// }
-
-	async sendMessage(peers: AgentPubKey[], message: MESSAGES) {
-		const messageBytes = encode(message);
-		return this.client.sendSessionMessage(this.sessionId, peers, messageBytes);
+	async join() {
+		this.joined = true;
 	}
 
-	async leave() {}
+	async sendMessage(peers: AgentPubKey[], message: MESSAGES) {
+		if (peers.length === 0) return;
+		const messageBytes = encode(message);
+		return this.client.sendSessionMessage(
+			this.sessionId,
+			peers.filter(
+				peer =>
+					encodeHashToBase64(peer) !==
+					encodeHashToBase64(this.client.client.myPubKey),
+			),
+			messageBytes,
+		);
+	}
+
+	async leave() {
+		this.joined = false;
+		return this.client.sendLeaveSesionSignal(this.sessionId, this.activePeers);
+	}
 }

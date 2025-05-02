@@ -3,7 +3,6 @@ use hdi::prelude::*;
 #[derive(Clone, PartialEq)]
 #[hdk_entry_helper]
 pub struct Example {
-    pub document_id: String,
     pub text: String,
 }
 

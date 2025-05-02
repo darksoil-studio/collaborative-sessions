@@ -20,6 +20,5 @@ export type EntryTypes = { type: 'Example' } & Example;
 export type LinkTypes = string;
 
 export interface Example {
-	document_id: string;
 	text: string;
 }

@@ -43,6 +43,23 @@ pub fn send_session_message(input: SendSessionMessageInput) -> ExternResult<()> 
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct SendLeaveSessionSignalInput {
+    pub session_id: String,
+    pub peers: Vec<AgentPubKey>,
+}
+
+#[hdk_extern]
+pub fn send_leave_session_signal(input: SendLeaveSessionSignalInput) -> ExternResult<()> {
+    send_remote_signal(
+        RemoteSignal::LeaveSession {
+            session_id: input.session_id,
+        },
+        input.peers,
+    )?;
+    Ok(())
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum RemoteSignal {
     Presence {
@@ -51,6 +68,9 @@ pub enum RemoteSignal {
     SessionMessage {
         session_id: String,
         message: SerializedBytes,
+    },
+    LeaveSession {
+        session_id: String,
     },
 }
 

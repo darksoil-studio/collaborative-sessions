@@ -41,4 +41,11 @@ export class RealTimeSessionsClient extends ZomeClient<RealTimeSessionsSignal> {
 			peers,
 		});
 	}
+
+	async sendLeaveSesionSignal(sessionId: string, peers: AgentPubKey[]) {
+		return this.callZome('send_leave_session_signal', {
+			session_id: sessionId,
+			peers,
+		});
+	}
 }
