@@ -54,7 +54,7 @@ jobs:
         env:
           CACHIX_AUTH_TOKEN: "${{ secrets.DARKSOIL_CACHIX_AUTH_TOKEN }}"
         run: |
-          cachix watch-exec darksoil-studio -- nix build --no-update-lock-file --accept-flake-config -L .#collaborative_sessions
+          cachix watch-exec darksoil-studio -- nix build --no-update-lock-file --accept-flake-config -L .#collaborative_sessions_coordinator
           cachix push darksoil-studio $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions_coordinator | jq -r 'keys[0]')
 
       - name: Pin release zomes
