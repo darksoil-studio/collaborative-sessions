@@ -55,7 +55,7 @@ jobs:
           CACHIX_AUTH_TOKEN: "${{ secrets.DARKSOIL_CACHIX_AUTH_TOKEN }}"
         run: |
           cachix watch-exec darksoil-studio -- nix build --no-update-lock-file --accept-flake-config -L .#collaborative_sessions
-          cachix push darksoil-studio $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions | jq -r 'keys[0]')
+          cachix push darksoil-studio $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions_coordinator | jq -r 'keys[0]')
 
       - name: Pin release zomes
         if: github.event_name != 'pull_request' && matrix.os == 'ubuntu-latest' && github.ref_name == 'main'
