@@ -39,15 +39,15 @@ jobs:
         env:
           CACHIX_AUTH_TOKEN: "${{ secrets.DARKSOIL_CACHIX_AUTH_TOKEN }}"
         run: |
-          cachix watch-exec darksoil-studio -- nix build --no-update-lock-file --accept-flake-config -L .#collaborative_sessions.meta.debug
-          cachix push darksoil-studio $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions.meta.debug | jq -r 'keys[0]')
+          cachix watch-exec darksoil-studio -- nix build --no-update-lock-file --accept-flake-config -L .#collaborative_sessions_coordinator.meta.debug
+          cachix push darksoil-studio $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions_coordinator.meta.debug | jq -r 'keys[0]')
 
       - name: Pin debug zomes
         if: github.event_name != 'pull_request' && github.ref_name == 'main'
         env:
           CACHIX_AUTH_TOKEN: "${{ secrets.DARKSOIL_CACHIX_AUTH_TOKEN }}"
         run: |
-          cachix pin darksoil-studio collaborative_sessions_debug $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions.meta.debug | jq -r 'keys[0]')
+          cachix pin darksoil-studio collaborative_sessions_coordinator_debug $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions_coordinator.meta.debug | jq -r 'keys[0]')
 
       - name: Build release zomes
         if: matrix.os == 'ubuntu-latest'
@@ -62,5 +62,5 @@ jobs:
         env:
           CACHIX_AUTH_TOKEN: "${{ secrets.DARKSOIL_CACHIX_AUTH_TOKEN }}"
         run: |
-          cachix pin darksoil-studio collaborative_sessions_debug $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions | jq -r 'keys[0]')
+          cachix pin darksoil-studio collaborative_sessions_coordinator_debug $(nix path-info --json --accept-flake-config --no-warn-dirty .#collaborative_sessions_coordinator | jq -r 'keys[0]')
 
