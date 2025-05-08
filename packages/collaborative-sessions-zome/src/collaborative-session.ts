@@ -114,13 +114,13 @@ export class CollaborativeSession<MESSAGES> extends EventEmitter<
 
 		let interval: number | undefined;
 		effect(() => {
-			const peers = this.acceptedCollaborators.get();
+			const collaborators = this.acceptedCollaborators.get();
 			if (interval) clearInterval(interval);
 			interval = setInterval(() => {
 				if (!this.joined) return;
 				this.client.sendPresenceSignal(
 					this.sessionId,
-					peers.filter(
+					collaborators.filter(
 						peer =>
 							encodeHashToBase64(peer) !==
 							encodeHashToBase64(this.client.client.myPubKey),

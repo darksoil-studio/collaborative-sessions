@@ -49,7 +49,6 @@ async function addPlayer(scenario: Scenario) {
 		value: testHappUrl,
 	});
 
-	patchCallZome(player.appWs as AppWebsocket);
 	await player.conductor
 		.adminWs()
 		.authorizeSigningCredentials(player.cells[0].cell_id);
