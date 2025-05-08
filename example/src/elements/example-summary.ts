@@ -1,12 +1,22 @@
+import '@darksoil-studio/automerge-collaborative-prosemirror/dist/elements/collaborative-prosemirror.js';
 import {
 	hashProperty,
 	sharedStyles,
 } from '@darksoil-studio/holochain-elements';
 import '@darksoil-studio/holochain-elements/dist/elements/display-error.js';
-import { SignalWatcher } from '@darksoil-studio/holochain-signals';
-import { EntryRecord } from '@darksoil-studio/holochain-utils';
+import {
+	Signal,
+	SignalWatcher,
+	joinAsyncMap,
+} from '@darksoil-studio/holochain-signals';
+import { EntryRecord, mapValues } from '@darksoil-studio/holochain-utils';
+import {
+	ProfilesStore,
+	profilesStoreContext,
+} from '@darksoil-studio/profiles-zome';
 import {
 	ActionHash,
+	AgentPubKey,
 	EntryHash,
 	Record,
 	encodeHashToBase64,
@@ -21,7 +31,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { exampleStoreContext } from '../context.js';
 import { ExampleStore } from '../example-store.js';
 import { Example } from '../types.js';
-import './collaborative-prosemirror.js';
 
 /**
  * @element example-summary
@@ -42,10 +51,32 @@ export class ExampleSummary extends SignalWatcher(LitElement) {
 	@consume({ context: exampleStoreContext, subscribe: true })
 	exampleStore!: ExampleStore;
 
+	@consume({ context: profilesStoreContext, subscribe: true })
+	profilesStore!: ProfilesStore;
+
+	acceptedCollaborators() {
+		return new Signal.Computed<AgentPubKey[]>(() => {
+			const allProfiles = this.profilesStore.allProfiles.get();
+			if (allProfiles.status !== 'completed') return [];
+
+			const originals = joinAsyncMap(
+				mapValues(allProfiles.value, v => v.original.get()),
+			);
+			if (originals.status !== 'completed') return [];
+
+			const agents = Array.from(originals.value.values()).map(
+				r => r.action.author,
+			);
+
+			return agents;
+		});
+	}
+
 	renderSummary(entryRecord: EntryRecord<Example>) {
 		return html`
 			<collaborative-prosemirror
 				.sessionId=${encodeHashToBase64(this.exampleHash)}
+				.acceptedCollaborators=${this.acceptedCollaborators().get()}
 				style="flex: 1"
 			></collaborative-prosemirror>
 		`;

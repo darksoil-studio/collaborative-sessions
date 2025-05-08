@@ -31,6 +31,7 @@
 		<demo-app></demo-app>
 
 		<script type="module">
+			import '@darksoil-studio/collaborative-sessions-zome/dist/elements/collaborative-sessions-context.js';
 			import { sharedStyles } from '@darksoil-studio/holochain-elements';
 			import '@darksoil-studio/holochain-elements/dist/elements/app-client-context.js';
 			import '@darksoil-studio/holochain-elements/dist/elements/display-error.js';
@@ -80,13 +81,17 @@
 					return html`
 						<app-client-context .client=${this._client}>
 							<profiles-context role="collaborative_sessions_test">
-								<example-context role="collaborative_sessions_test">
-									<div class="fill row" style="width: 100vw; height: 100%;">
-										<profile-prompt style="flex: 1;">
-											${this.renderContent()}
-										</profile-prompt>
-									</div>
-								</example-context>
+								<collaborative-sessions-context
+									role="collaborative_sessions_test"
+								>
+									<example-context role="collaborative_sessions_test">
+										<div class="fill row" style="width: 100vw; height: 100%;">
+											<profile-prompt style="flex: 1;">
+												${this.renderContent()}
+											</profile-prompt>
+										</div>
+									</example-context>
+								</collaborative-sessions-context>
 							</profiles-context>
 						</app-client-context>
 					`;

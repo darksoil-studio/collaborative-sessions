@@ -4,178 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "src/document-store.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "DocumentStore",
-          "members": [
-            {
-              "kind": "field",
-              "name": "repo",
-              "type": {
-                "text": "Repo"
-              },
-              "default": "new Repo({ network: [new CollaborativeSessionsNetworkAdapter(this.sessionStore)], storage: new IndexedDBStorageAdapter(), peerId: encodeHashToBase64( this.sessionStore.client.client.myPubKey, ) as PeerId, })"
-            },
-            {
-              "kind": "method",
-              "name": "createDocument",
-              "static": true,
-              "return": {
-                "type": {
-                  "text": "DocumentId"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "myPubKey",
-                  "type": {
-                    "text": "AgentPubKey"
-                  }
-                },
-                {
-                  "name": "initialValue",
-                  "type": {
-                    "text": "T"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "docHandle"
-            }
-          ]
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "DocumentStore",
-          "declaration": {
-            "name": "DocumentStore",
-            "module": "src/document-store.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/index.ts",
-      "declarations": [],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "*",
-          "declaration": {
-            "name": "*",
-            "package": "./network-adapter.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "*",
-          "declaration": {
-            "name": "*",
-            "package": "./document-store.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/network-adapter.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "CollaborativeSessionsNetworkAdapter",
-          "members": [
-            {
-              "kind": "method",
-              "name": "isReady",
-              "return": {
-                "type": {
-                  "text": "boolean"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "whenReady",
-              "return": {
-                "type": {
-                  "text": "Promise<void>"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "connect",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "peerId",
-                  "type": {
-                    "text": "PeerId"
-                  }
-                },
-                {
-                  "name": "peerMetadata",
-                  "optional": true,
-                  "type": {
-                    "text": "PeerMetadata"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "disconnect",
-              "return": {
-                "type": {
-                  "text": "void"
-                }
-              }
-            },
-            {
-              "kind": "method",
-              "name": "send",
-              "parameters": [
-                {
-                  "name": "message",
-                  "type": {
-                    "text": "Message"
-                  }
-                }
-              ]
-            }
-          ],
-          "superclass": {
-            "name": "AutomergeNetworkAdapter",
-            "package": "@automerge/automerge-repo/slim"
-          }
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "CollaborativeSessionsNetworkAdapter",
-          "declaration": {
-            "name": "CollaborativeSessionsNetworkAdapter",
-            "module": "src/network-adapter.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "locales/locales.js",
       "declarations": [
         {
@@ -226,6 +54,157 @@
           "declaration": {
             "name": "allLocales",
             "module": "locales/locales.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/doc-handle.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/document-store.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "DocumentStore",
+          "members": [
+            {
+              "kind": "field",
+              "name": "session",
+              "type": {
+                "text": "CollaborativeSession<DocumentSessionMessages>"
+              },
+              "default": "new CollaborativeSession( this.client, this.sessionId, this.acceptedCollaborators, )"
+            },
+            {
+              "kind": "field",
+              "name": "syncStates",
+              "type": {
+                "text": "Record<AgentPubKeyB64, Automerge.SyncState>"
+              },
+              "privacy": "private",
+              "default": "{}",
+              "description": "Sync state for each peer we've communicated with (including inactive peers)"
+            },
+            {
+              "kind": "method",
+              "name": "change",
+              "parameters": [
+                {
+                  "name": "fn",
+                  "type": {
+                    "text": "(doc: T) => void"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "docSync",
+              "return": {
+                "type": {
+                  "text": "Automerge.Doc<T>"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "syncWithPeers",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "sendSyncMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "peerId",
+                  "type": {
+                    "text": "AgentPubKeyB64"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleSyncMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "peerId",
+                  "type": {
+                    "text": "AgentPubKeyB64"
+                  }
+                },
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "SyncMessage"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleChange",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "_peer",
+                  "type": {
+                    "text": "AgentPubKeyB64"
+                  }
+                },
+                {
+                  "name": "change",
+                  "type": {
+                    "text": "Change"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "EventEmitter",
+            "package": "eventemitter3"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DocumentStore",
+          "declaration": {
+            "name": "DocumentStore",
+            "module": "src/document-store.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./document-store.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./doc-handle.js"
           }
         }
       ]

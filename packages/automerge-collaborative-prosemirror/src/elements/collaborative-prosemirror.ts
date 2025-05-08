@@ -4,29 +4,14 @@ import {
 	pmDocFromSpans,
 	syncPlugin,
 } from '@automerge/prosemirror';
-import '@darksoil-studio/automerge-collaborative-sessions';
 import { DocumentStore } from '@darksoil-studio/automerge-collaborative-sessions';
 import {
 	CollaborativeSessionsClient,
-	SessionStore,
+	collaborativeSessionsClientContext,
 } from '@darksoil-studio/collaborative-sessions-zome';
 import { sharedStyles } from '@darksoil-studio/holochain-elements';
-import {
-	Signal,
-	SignalWatcher,
-	joinAsyncMap,
-	toPromise,
-} from '@darksoil-studio/holochain-signals';
-import { mapValues } from '@darksoil-studio/holochain-utils';
-import {
-	ProfilesStore,
-	profilesStoreContext,
-} from '@darksoil-studio/profiles-zome';
-import {
-	AgentPubKey,
-	decodeHashFromBase64,
-	encodeHashToBase64,
-} from '@holochain/client';
+import { Signal, SignalWatcher } from '@darksoil-studio/holochain-signals';
+import { AgentPubKey } from '@holochain/client';
 import { consume } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -34,53 +19,44 @@ import { exampleSetup } from 'prosemirror-example-setup';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import { prosemirrorMenuStyles, prosemirrorStyles } from './prosemirror.js';
+import { prosemirrorMenuStyles, prosemirrorStyles } from './styles.js';
 
 @customElement('collaborative-prosemirror')
 export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	@property()
 	sessionId!: string;
 
-	@property({ attribute: 'value', type: String })
+	@property()
 	value!: string;
+
+	_acceptedCollaborators = new Signal.State<AgentPubKey[]>(
+		this.acceptedCollaborators,
+	);
+	set acceptedCollaborators(collaborators: Array<AgentPubKey>) {
+		this._acceptedCollaborators.set(collaborators);
+	}
+	get acceptedCollaborators() {
+		return this._acceptedCollaborators ? this._acceptedCollaborators.get() : [];
+	}
+
+	@consume({ context: collaborativeSessionsClientContext })
+	client!: CollaborativeSessionsClient;
 
 	@query('#editor')
 	el!: HTMLElement;
 
 	prosemirror!: EditorView;
 
-	@consume({ context: profilesStoreContext, subscribe: true })
-	profilesStore!: ProfilesStore;
-
 	async firstUpdated() {
-		const allAgents = new Signal.Computed<AgentPubKey[]>(() => {
-			const allProfiles = this.profilesStore.allProfiles.get();
-			if (allProfiles.status !== 'completed') return [];
-
-			const originals = joinAsyncMap(
-				mapValues(allProfiles.value, v => v.original.get()),
-			);
-			if (originals.status !== 'completed') return [];
-
-			const agents = Array.from(originals.value.values()).map(
-				r => r.action.author,
-			);
-
-			return agents;
-		});
-
 		const adapter = basicSchemaAdapter;
 		const initialValue = Automerge.from({
 			text: this.value || '',
 		});
 
 		const documentStore = new DocumentStore<{ text: string }>(
-			new CollaborativeSessionsClient(
-				this.profilesStore.client.client,
-				this.profilesStore.client.roleName,
-			),
+			this.client,
 			this.sessionId,
-			allAgents,
+			this._acceptedCollaborators,
 			initialValue,
 		);
 
