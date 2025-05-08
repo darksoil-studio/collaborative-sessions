@@ -1,0 +1,387 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/collaborative-session.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CollaborativeSession",
+          "members": [
+            {
+              "kind": "field",
+              "name": "collaborators",
+              "default": "new Signal.State<HoloHashMap<AgentPubKey, PeerState>>( new HoloHashMap(), )"
+            },
+            {
+              "kind": "field",
+              "name": "activeCollaborators",
+              "type": {
+                "text": "Array<AgentPubKey>"
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "joined",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "true"
+            },
+            {
+              "kind": "method",
+              "name": "join"
+            },
+            {
+              "kind": "method",
+              "name": "sendMessage",
+              "parameters": [
+                {
+                  "name": "peers",
+                  "type": {
+                    "text": "AgentPubKey[]"
+                  }
+                },
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "MESSAGES"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "leave"
+            }
+          ],
+          "superclass": {
+            "name": "EventEmitter",
+            "package": "eventemitter3"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CollaborativeSession",
+          "declaration": {
+            "name": "CollaborativeSession",
+            "module": "src/collaborative-session.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/collaborative-sessions-client.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CollaborativeSessionsClient",
+          "members": [
+            {
+              "kind": "method",
+              "name": "sendPresenceSignal",
+              "parameters": [
+                {
+                  "name": "sessionId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "peers",
+                  "type": {
+                    "text": "AgentPubKey[]"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "sendSessionMessage",
+              "parameters": [
+                {
+                  "name": "sessionId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "peers",
+                  "type": {
+                    "text": "AgentPubKey[]"
+                  }
+                },
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "Uint8Array"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "sendLeaveSesionSignal",
+              "parameters": [
+                {
+                  "name": "sessionId",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "peers",
+                  "type": {
+                    "text": "AgentPubKey[]"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "ZomeClient",
+            "package": "@darksoil-studio/holochain-utils"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CollaborativeSessionsClient",
+          "declaration": {
+            "name": "CollaborativeSessionsClient",
+            "module": "src/collaborative-sessions-client.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/context.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "collaborativeSessionsClientContext"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "collaborativeSessionsClientContext",
+          "declaration": {
+            "name": "collaborativeSessionsClientContext",
+            "module": "src/context.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/index.ts",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./collaborative-sessions-client.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./collaborative-session.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./types.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./utils.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./context.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/mocks.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CollaborativeSessionsZomeMock",
+          "superclass": {
+            "name": "ZomeMock",
+            "package": "@darksoil-studio/holochain-utils"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CollaborativeSessionsZomeMock",
+          "declaration": {
+            "name": "CollaborativeSessionsZomeMock",
+            "module": "src/mocks.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/types.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utils.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "effect",
+          "parameters": [
+            {
+              "name": "cb",
+              "type": {
+                "text": "() => void"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "effect",
+          "declaration": {
+            "name": "effect",
+            "module": "src/utils.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/collaborative-sessions-context.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ExampleContext",
+          "members": [
+            {
+              "kind": "field",
+              "name": "client",
+              "type": {
+                "text": "AppClient"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "collaborativeSessionsClient",
+              "type": {
+                "text": "CollaborativeSessionsClient"
+              },
+              "attribute": "collaborativeSessionsClient"
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "role"
+            },
+            {
+              "kind": "field",
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'collaborative_sessions'",
+              "attribute": "zome"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "collaborativeSessionsClient",
+              "type": {
+                "text": "CollaborativeSessionsClient"
+              },
+              "fieldName": "collaborativeSessionsClient"
+            },
+            {
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "role"
+            },
+            {
+              "name": "zome",
+              "type": {
+                "text": "string"
+              },
+              "default": "'collaborative_sessions'",
+              "fieldName": "zome"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "collaborative-sessions-context",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ExampleContext",
+          "declaration": {
+            "name": "ExampleContext",
+            "module": "src/elements/collaborative-sessions-context.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "collaborative-sessions-context",
+          "declaration": {
+            "name": "ExampleContext",
+            "module": "src/elements/collaborative-sessions-context.ts"
+          }
+        }
+      ]
+    }
+  ]
+}

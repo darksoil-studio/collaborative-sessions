@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_example","delete_example","get_all_deletes_for_example","get_all_revisions_for_example","get_latest_example","get_oldest_delete_for_example","get_original_example","update_example"],"struct":["UpdateExampleInput"]};

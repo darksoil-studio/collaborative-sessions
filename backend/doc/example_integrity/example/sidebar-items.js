@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["validate_create_example","validate_create_link_all_examples","validate_create_link_example_updates","validate_delete_example","validate_delete_link_all_examples","validate_delete_link_example_updates","validate_update_example"],"struct":["Example"]};
