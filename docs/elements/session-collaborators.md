@@ -1,1 +1,1 @@
-# <session-collaborators>
+# `<session-collaborators>`
