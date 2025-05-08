@@ -13,13 +13,13 @@ import {
 } from '@holochain/client';
 import { encode } from '@msgpack/msgpack';
 
-import { RealTimeSessionsSignal } from './types.js';
+import { CollaborativeSessionsSignal } from './types.js';
 
-export class RealTimeSessionsClient extends ZomeClient<RealTimeSessionsSignal> {
+export class CollaborativeSessionsClient extends ZomeClient<CollaborativeSessionsSignal> {
 	constructor(
 		public client: AppClient,
 		public roleName: string,
-		public zomeName = 'real_time_sessions',
+		public zomeName = 'collaborative_sessions',
 	) {
 		super(client, roleName, zomeName);
 	}

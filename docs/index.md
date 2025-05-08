@@ -12,15 +12,15 @@ hero:
       link: /setup.md
     - theme: alt
       text: Integrity Zome API
-      link: "/backend/doc/real_time_sessions_integrity/index.html"
+      link: "/backend/doc/collaborative_sessions_integrity/index.html"
       target: "_blank"
     - theme: alt
       text: Coordinator Zome API
-      link: "/backend/doc/real_time_sessions/index.html"
+      link: "/backend/doc/collaborative_sessions/index.html"
       target: "_blank"
     - theme: alt
       text: Frontend API
-      link: "/real-time-sessions-store.md"
+      link: "/collaborative-sessions-store.md"
 
 features:
   - title: UI + Integrity + Coordinator Zomes

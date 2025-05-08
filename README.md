@@ -46,8 +46,8 @@ To package the web happ:
 npm run package
 ```
 
-You'll have the `real-time-sessions.webhapp` in `workdir`. This is what you should distribute so that the Holochain Launcher can install it.
-You will also have its subcomponent `real-time-sessions.happ` in the same folder`.
+You'll have the `collaborative-sessions.webhapp` in `workdir`. This is what you should distribute so that the Holochain Launcher can install it.
+You will also have its subcomponent `collaborative-sessions.happ` in the same folder`.
 
 ## Documentation
 

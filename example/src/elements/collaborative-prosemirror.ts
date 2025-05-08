@@ -4,8 +4,12 @@ import {
 	pmDocFromSpans,
 	syncPlugin,
 } from '@automerge/prosemirror';
-import '@darksoil-studio/automerge-real-time-sessions';
-import { DocumentStore } from '@darksoil-studio/automerge-real-time-sessions';
+import '@darksoil-studio/automerge-collaborative-sessions';
+import { DocumentStore } from '@darksoil-studio/automerge-collaborative-sessions';
+import {
+	CollaborativeSessionsClient,
+	SessionStore,
+} from '@darksoil-studio/collaborative-sessions-zome';
 import { sharedStyles } from '@darksoil-studio/holochain-elements';
 import {
 	Signal,
@@ -18,10 +22,6 @@ import {
 	ProfilesStore,
 	profilesStoreContext,
 } from '@darksoil-studio/profiles-zome';
-import {
-	RealTimeSessionsClient,
-	SessionStore,
-} from '@darksoil-studio/real-time-sessions-zome';
 import {
 	AgentPubKey,
 	decodeHashFromBase64,
@@ -75,7 +75,7 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 		});
 
 		const documentStore = new DocumentStore<{ text: string }>(
-			new RealTimeSessionsClient(
+			new CollaborativeSessionsClient(
 				this.profilesStore.client.client,
 				this.profilesStore.client.roleName,
 			),

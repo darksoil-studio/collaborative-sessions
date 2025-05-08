@@ -18,7 +18,7 @@ export default withMermaid({
       include: ['mermaid', 'dayjs', '@braintree/sanitize-url'],
     },
   },
-  base: "/real-time-sessions-zome",
+  base: "/collaborative-sessions-zome",
   title: "Real Time Sessions Zome",
   description: "Real Time Sessions zome for holochain apps",
   themeConfig: {
@@ -34,20 +34,20 @@ export default withMermaid({
         items: [
           {
             text: "Integrity Zome",
-            link: "/backend/doc/real_time_sessions_integrity/index.html",
+            link: "/backend/doc/collaborative_sessions_integrity/index.html",
             target: "_blank",
           },
           {
             text: "Coordinator Zome",
-            link: "/backend/doc/real_time_sessions/index.html",
+            link: "/backend/doc/collaborative_sessions/index.html",
             target: "_blank",
           },
           {
             text: "Frontend",
             items: [
               {
-                text: "RealTimeSessionsStore",
-                link: "/real-time-sessions-store.md",
+                text: "CollaborativeSessionsStore",
+                link: "/collaborative-sessions-store.md",
               },
               {
                 text: "Elements",
@@ -67,7 +67,7 @@ export default withMermaid({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/darksoil-studio/real-time-sessions-zome",
+        link: "https://github.com/darksoil-studio/collaborative-sessions-zome",
       },
     ],
     search: {

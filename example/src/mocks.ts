@@ -36,7 +36,7 @@ export class ExampleZomeMock extends ZomeMock implements AppClient {
   constructor(
     myPubKey?: AgentPubKey,
   ) {
-    super("real_time_sessions_test", "real_time_sessions", "real_time_sessions_test_app", myPubKey);
+    super("collaborative_sessions_test", "collaborative_sessions", "collaborative_sessions_test_app", myPubKey);
   }
   /** Example */
   examples = new HoloHashMap<ActionHash, {

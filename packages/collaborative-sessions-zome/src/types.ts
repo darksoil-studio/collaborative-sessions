@@ -13,7 +13,7 @@ import {
 	Update,
 } from '@holochain/client';
 
-export type RealTimeSessionsSignal = {
+export type CollaborativeSessionsSignal = {
 	provenance: AgentPubKey;
 	remote_signal: RemoteSignal;
 };

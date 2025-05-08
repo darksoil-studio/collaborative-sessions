@@ -18,11 +18,11 @@ import { encode } from '@msgpack/msgpack';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import { RealTimeSessionsClient } from '../../packages/real-time-sessions-zome/src/real-time-sessions-client.js';
+import { CollaborativeSessionsClient } from '../../packages/collaborative-sessions-zome/src/collaborative-sessions-client.js';
 
 const testHappUrl =
 	dirname(fileURLToPath(import.meta.url)) +
-	'/../../workdir/real-time-sessions_test.happ';
+	'/../../workdir/collaborative-sessions_test.happ';
 
 export async function setup(scenario: Scenario, numPlayers = 2) {
 	const players = await promiseAllSequential(
@@ -53,9 +53,9 @@ async function addPlayer(scenario: Scenario) {
 	await player.conductor
 		.adminWs()
 		.authorizeSigningCredentials(player.cells[0].cell_id);
-	const client = new RealTimeSessionsClient(
+	const client = new CollaborativeSessionsClient(
 		player.appWs as any,
-		'real_time_sessions_test',
+		'collaborative_sessions_test',
 	);
 	return {
 		client,

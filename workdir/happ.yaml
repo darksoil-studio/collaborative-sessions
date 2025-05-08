@@ -1,14 +1,14 @@
 ---
 manifest_version: "1"
-name: real-time-sessions_test
+name: collaborative-sessions_test
 description: ~
 roles:   
-  - name: real_time_sessions_test
+  - name: collaborative_sessions_test
     provisioning:
       strategy: create
       deferred: false
     dna:
-      bundled: "./real_time_sessions_test.dna"
+      bundled: "./collaborative_sessions_test.dna"
       modifiers:
         network_seed: ~
         properties: ~

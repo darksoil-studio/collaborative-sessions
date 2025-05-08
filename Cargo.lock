@@ -102,6 +102,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "collaborative_sessions_coordinator"
+version = "0.0.1"
+dependencies = [
+ "hdk",
+ "serde",
+]
+
+[[package]]
 name = "colored"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -720,23 +728,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d"
 dependencies = [
  "proc-macro2",
-]
-
-[[package]]
-name = "real_time_sessions"
-version = "0.0.1"
-dependencies = [
- "hdk",
- "real_time_sessions_integrity",
- "serde",
-]
-
-[[package]]
-name = "real_time_sessions_integrity"
-version = "0.0.1"
-dependencies = [
- "hdi",
- "serde",
 ]
 
 [[package]]

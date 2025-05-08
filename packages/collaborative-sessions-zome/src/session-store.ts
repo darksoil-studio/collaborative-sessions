@@ -8,7 +8,7 @@ import { AgentPubKey, encodeHashToBase64 } from '@holochain/client';
 import { decode, encode } from '@msgpack/msgpack';
 import { EventEmitter } from 'eventemitter3';
 
-import { RealTimeSessionsClient } from './real-time-sessions-client.js';
+import { CollaborativeSessionsClient } from './collaborative-sessions-client.js';
 import { effect } from './utils.js';
 
 export interface PeerMessagePayload<MESSAGES> {
@@ -54,7 +54,7 @@ export class SessionStore<
 	joined = true;
 
 	constructor(
-		public client: RealTimeSessionsClient,
+		public client: CollaborativeSessionsClient,
 		public sessionId: string,
 		public acceptedPeers:
 			| Signal.State<AgentPubKey[]>

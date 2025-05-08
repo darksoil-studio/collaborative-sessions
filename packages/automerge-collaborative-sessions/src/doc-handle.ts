@@ -1,4 +1,3 @@
-import { DocumentId } from '@automerge/automerge-repo/slim';
 import { next as A } from '@automerge/automerge/slim';
 
 // This type is copied from automerge-repo so we don't have to depend on the whole automerge-repo

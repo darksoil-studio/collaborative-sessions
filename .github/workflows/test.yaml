@@ -32,4 +32,4 @@ jobs:
 
       - name: Install and test
         run: |
-          nix develop --no-update-lock-file --accept-flake-config --command bash -c "pnpm i && pnpm t && pnpm -F @darksoil-studio/real-time-sessions-zome build"
+          nix develop --no-update-lock-file --accept-flake-config --command bash -c "pnpm i && pnpm t && pnpm -F @darksoil-studio/collaborative-sessions-zome build"

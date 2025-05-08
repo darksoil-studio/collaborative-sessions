@@ -1,4 +1,4 @@
-# @darksoil-studio/real-time-sessions-zome
+# @darksoil-studio/collaborative-sessions-zome
 
 This module follows the [tnesh-stack](https://darksoil.studio/tnesh-stack) pattern of developing holochain modules. Read its documentation to understand more about its motivation and the big picture.
 

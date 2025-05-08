@@ -29,14 +29,14 @@ import {
 	fakeEntryHash,
 } from '@holochain/client';
 
-import { RealTimeSessionsClient } from './real-time-sessions-client.js';
+import { CollaborativeSessionsClient } from './collaborative-sessions-client.js';
 
-export class RealTimeSessionsZomeMock extends ZomeMock implements AppClient {
+export class CollaborativeSessionsZomeMock extends ZomeMock implements AppClient {
 	constructor(myPubKey?: AgentPubKey) {
 		super(
-			'real_time_sessions_test',
-			'real_time_sessions',
-			'real_time_sessions_test_app',
+			'collaborative_sessions_test',
+			'collaborative_sessions',
+			'collaborative_sessions_test_app',
 			myPubKey,
 		);
 	}

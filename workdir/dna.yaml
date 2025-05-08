@@ -1,14 +1,9 @@
 manifest_version: '1'
-name: real_time_sessions_test
+name: collaborative_sessions_test
 integrity:
   network_seed: null
   properties: null
   zomes:
-  - name: real_time_sessions_integrity
-    hash: null
-    bundled: ../target/wasm32-unknown-unknown/release/real_time_sessions_integrity.wasm
-    dependencies: null
-    dylib: null
   - name: profiles_integrity
     hash: null
     bundled: <NIX PACKAGE>
@@ -21,11 +16,10 @@ integrity:
     dylib: null
 coordinator:
   zomes:
-  - name: real_time_sessions
+  - name: collaborative_sessions
     hash: null
-    bundled: ../target/wasm32-unknown-unknown/release/real_time_sessions.wasm
-    dependencies:
-    - name: real_time_sessions_integrity
+    bundled: ../target/wasm32-unknown-unknown/release/collaborative_sessions.wasm
+    dependencies: []
     dylib: null
   - name: profiles
     hash: null

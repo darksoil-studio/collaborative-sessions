@@ -2,7 +2,7 @@
 
 {
   perSystem = { inputs', self', lib, system, ... }: {
-    packages.real_time_sessions_test_dna =
+    packages.collaborative_sessions_test_dna =
       inputs.holochain-nix-builders.outputs.builders.${system}.dna {
         dnaManifest = ./dna.yaml;
         zomes = {
@@ -11,9 +11,8 @@
             inputs'.profiles-zome.packages.profiles_integrity;
           profiles = inputs'.profiles-zome.packages.profiles;
           # This overrides all the "bundled" properties for the DNA manifest
-          real_time_sessions_integrity =
-            self'.packages.real_time_sessions_integrity;
-          real_time_sessions = self'.packages.real_time_sessions;
+          collaborative_sessions =
+            self'.packages.collaborative_sessions_coordinator;
           example_integrity = self'.packages.example_integrity;
           example = self'.packages.example;
         };

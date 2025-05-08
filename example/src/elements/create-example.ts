@@ -1,5 +1,5 @@
 import { Message } from '@automerge/automerge-repo';
-import { DocumentStore } from '@darksoil-studio/automerge-real-time-sessions';
+import { DocumentStore } from '@darksoil-studio/automerge-collaborative-sessions';
 import {
 	hashProperty,
 	hashState,

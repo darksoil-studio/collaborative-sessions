@@ -3,10 +3,10 @@ import { Signal } from '@darksoil-studio/holochain-signals';
 import {
 	PeerJoinedPayload,
 	PeerMessagePayload,
-	RealTimeSessionsClient,
+	CollaborativeSessionsClient,
 	SessionStore,
 	effect,
-} from '@darksoil-studio/real-time-sessions-zome';
+} from '@darksoil-studio/collaborative-sessions-zome';
 import {
 	AgentPubKey,
 	AgentPubKeyB64,
@@ -38,7 +38,7 @@ export class DocumentStore<T>
 	private syncStates: Record<AgentPubKeyB64, Automerge.SyncState> = {};
 
 	constructor(
-		public client: RealTimeSessionsClient,
+		public client: CollaborativeSessionsClient,
 		public sessionId: string,
 		public acceptedPeers:
 			| Signal.State<AgentPubKey[]>

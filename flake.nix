@@ -30,8 +30,7 @@
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        ./zomes/integrity/real_time_sessions/zome.nix
-        ./zomes/coordinator/real_time_sessions/zome.nix
+        ./zomes/coordinator/collaborative_sessions/zome.nix
         ./zomes/integrity/example/zome.nix
         ./zomes/coordinator/example/zome.nix
         # Just for testing purposes
@@ -62,14 +61,13 @@
           buildInputs = [ pkgs.makeWrapper ];
           postBuild = ''
             wrapProgram $out/bin/scaffold-remote-zome \
-              --add-flags "real-time-sessions-zome \
-                --integrity-zome-name real_time_sessions_integrity \
-                --coordinator-zome-name real_time_sessions \
-                --remote-zome-git-url github:darksoil-studio/real-time-sessions-zome \
-                --remote-npm-package-name @darksoil-studio/real-time-sessions-zome \
+              --add-flags "collaborative-sessions-zome \
+                --coordinator-zome-name collaborative_sessions_coordinator \
+                --remote-zome-git-url github:darksoil-studio/collaborative-sessions-zome \
+                --remote-npm-package-name @darksoil-studio/collaborative-sessions-zome \
                 --remote-zome-git-branch main-0.5 \
-                --context-element real-time-sessions-context \
-                --context-element-import @darksoil-studio/real-time-sessions-zome/dist/elements/real-time-sessions-context.js" 
+                --context-element collaborative-sessions-context \
+                --context-element-import @darksoil-studio/collaborative-sessions-zome/dist/elements/collaborative-sessions-context.js" 
           '';
         };
       };

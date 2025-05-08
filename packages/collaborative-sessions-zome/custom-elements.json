@@ -12,7 +12,7 @@
           "name": "*",
           "declaration": {
             "name": "*",
-            "package": "./real-time-sessions-client.js"
+            "package": "./collaborative-sessions-client.js"
           }
         },
         {
@@ -40,7 +40,7 @@
         {
           "kind": "class",
           "description": "",
-          "name": "RealTimeSessionsZomeMock",
+          "name": "CollaborativeSessionsZomeMock",
           "superclass": {
             "name": "ZomeMock",
             "package": "@darksoil-studio/holochain-utils"
@@ -50,9 +50,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "RealTimeSessionsZomeMock",
+          "name": "CollaborativeSessionsZomeMock",
           "declaration": {
-            "name": "RealTimeSessionsZomeMock",
+            "name": "CollaborativeSessionsZomeMock",
             "module": "src/mocks.ts"
           }
         }
@@ -60,12 +60,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/real-time-sessions-client.ts",
+      "path": "src/collaborative-sessions-client.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "RealTimeSessionsClient",
+          "name": "CollaborativeSessionsClient",
           "members": [
             {
               "kind": "method",
@@ -119,10 +119,10 @@
       "exports": [
         {
           "kind": "js",
-          "name": "RealTimeSessionsClient",
+          "name": "CollaborativeSessionsClient",
           "declaration": {
-            "name": "RealTimeSessionsClient",
-            "module": "src/real-time-sessions-client.ts"
+            "name": "CollaborativeSessionsClient",
+            "module": "src/collaborative-sessions-client.ts"
           }
         }
       ]

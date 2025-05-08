@@ -17,7 +17,7 @@
               "type": {
                 "text": "Repo"
               },
-              "default": "new Repo({ network: [new RealTimeSessionsNetworkAdapter(this.sessionStore)], storage: new IndexedDBStorageAdapter(), peerId: encodeHashToBase64( this.sessionStore.client.client.myPubKey, ) as PeerId, })"
+              "default": "new Repo({ network: [new CollaborativeSessionsNetworkAdapter(this.sessionStore)], storage: new IndexedDBStorageAdapter(), peerId: encodeHashToBase64( this.sessionStore.client.client.myPubKey, ) as PeerId, })"
             },
             {
               "kind": "method",
@@ -91,7 +91,7 @@
         {
           "kind": "class",
           "description": "",
-          "name": "RealTimeSessionsNetworkAdapter",
+          "name": "CollaborativeSessionsNetworkAdapter",
           "members": [
             {
               "kind": "method",
@@ -166,9 +166,9 @@
       "exports": [
         {
           "kind": "js",
-          "name": "RealTimeSessionsNetworkAdapter",
+          "name": "CollaborativeSessionsNetworkAdapter",
           "declaration": {
-            "name": "RealTimeSessionsNetworkAdapter",
+            "name": "CollaborativeSessionsNetworkAdapter",
             "module": "src/network-adapter.ts"
           }
         }
