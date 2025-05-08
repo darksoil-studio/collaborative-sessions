@@ -32,6 +32,6 @@ jobs:
 
       - uses: JS-DevTools/npm-publish@v3
         with:
-          package: "ui"
+          package: "packages/collaborative-sessions-zome"
           token: ${{ secrets.NPM_TOKEN }}
 
