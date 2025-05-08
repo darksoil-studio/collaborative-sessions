@@ -17,7 +17,7 @@ This will do the following:
 
 That's it! You have now integrated the `collaborative_sessions` coordinator and integrity zomes and their UI into your app!
 
-Now, [choose which elements you need](/elements/collaborative-sessions-context.md) and import them like this:
+Now, choose which elements you need and import them like this:
 
 ```js
 import "@darksoil-studio/collaborative-sessions-zome/dist/elements/collaborative-sessions-context.js";

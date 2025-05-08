@@ -24,7 +24,7 @@ export interface PeerLeftPayload {
 	peer: AgentPubKey;
 }
 
-export type SessionStoreEvents<MESSAGES> =
+export type CollaborativeSessionEvents<MESSAGES> =
 	| {
 			'peer-joined': (payload: PeerJoinedPayload) => void;
 	  }
@@ -39,16 +39,15 @@ export interface PeerState {
 	lastSeen: number;
 }
 
-export class SessionStore<
-	MESSAGES,
-	EVENTS extends Record<string, unknown>,
-> extends EventEmitter<SessionStoreEvents<MESSAGES> | EVENTS> {
-	peers = new Signal.State<HoloHashMap<AgentPubKey, PeerState>>(
+export class CollaborativeSession<MESSAGES> extends EventEmitter<
+	CollaborativeSessionEvents<MESSAGES>
+> {
+	collaborators = new Signal.State<HoloHashMap<AgentPubKey, PeerState>>(
 		new HoloHashMap(),
 	);
 
-	get activePeers(): Array<AgentPubKey> {
-		return Array.from(this.peers.get().keys());
+	get activeCollaborators(): Array<AgentPubKey> {
+		return Array.from(this.collaborators.get().keys());
 	}
 
 	joined = true;
@@ -56,7 +55,7 @@ export class SessionStore<
 	constructor(
 		public client: CollaborativeSessionsClient,
 		public sessionId: string,
-		public acceptedPeers:
+		public acceptedCollaborators:
 			| Signal.State<AgentPubKey[]>
 			| Signal.Computed<AgentPubKey[]>,
 	) {
@@ -66,9 +65,9 @@ export class SessionStore<
 			if (!this.joined) return;
 			if (signal.remote_signal.session_id !== this.sessionId) return;
 
-			const acceptedPeers = this.acceptedPeers.get();
+			const acceptedCollaborators = this.acceptedCollaborators.get();
 			if (
-				!acceptedPeers.find(
+				!acceptedCollaborators.find(
 					acceptedPeer =>
 						encodeHashToBase64(acceptedPeer) ===
 						encodeHashToBase64(signal.provenance),
@@ -80,7 +79,7 @@ export class SessionStore<
 				return;
 			}
 
-			const peers = this.peers.get();
+			const peers = this.collaborators.get();
 			const peer = peers.get(signal.provenance);
 
 			switch (signal.remote_signal.type) {
@@ -110,18 +109,18 @@ export class SessionStore<
 					});
 					break;
 			}
-			this.peers.set(peers);
+			this.collaborators.set(peers);
 		});
 
 		let interval: number | undefined;
 		effect(() => {
-			const peers = this.acceptedPeers.get();
+			const collaborators = this.acceptedCollaborators.get();
 			if (interval) clearInterval(interval);
 			interval = setInterval(() => {
 				if (!this.joined) return;
 				this.client.sendPresenceSignal(
 					this.sessionId,
-					peers.filter(
+					collaborators.filter(
 						peer =>
 							encodeHashToBase64(peer) !==
 							encodeHashToBase64(this.client.client.myPubKey),
@@ -133,6 +132,15 @@ export class SessionStore<
 
 	async join() {
 		this.joined = true;
+		const peers = this.acceptedCollaborators.get();
+		return this.client.sendPresenceSignal(
+			this.sessionId,
+			peers.filter(
+				peer =>
+					encodeHashToBase64(peer) !==
+					encodeHashToBase64(this.client.client.myPubKey),
+			),
+		);
 	}
 
 	async sendMessage(peers: AgentPubKey[], message: MESSAGES) {
@@ -151,6 +159,9 @@ export class SessionStore<
 
 	async leave() {
 		this.joined = false;
-		return this.client.sendLeaveSesionSignal(this.sessionId, this.activePeers);
+		return this.client.sendLeaveSesionSignal(
+			this.sessionId,
+			this.activeCollaborators,
+		);
 	}
 }

@@ -1,18 +1,19 @@
 import { next as Automerge, Change, SyncMessage } from '@automerge/automerge';
-import { Signal } from '@darksoil-studio/holochain-signals';
 import {
+	CollaborativeSession,
+	CollaborativeSessionEvents,
+	CollaborativeSessionsClient,
 	PeerJoinedPayload,
 	PeerMessagePayload,
-	CollaborativeSessionsClient,
-	SessionStore,
-	effect,
 } from '@darksoil-studio/collaborative-sessions-zome';
+import { Signal } from '@darksoil-studio/holochain-signals';
 import {
 	AgentPubKey,
 	AgentPubKeyB64,
 	decodeHashFromBase64,
 	encodeHashToBase64,
 } from '@holochain/client';
+import { EventEmitter } from 'eventemitter3';
 
 import { DocHandle, DocHandleChangePayload } from './doc-handle.js';
 
@@ -31,23 +32,32 @@ export type DocumentSessionMessages =
 	  };
 
 export class DocumentStore<T>
-	extends SessionStore<DocumentSessionMessages, DocumentStoreEvents<T>>
+	extends EventEmitter<
+		DocumentStoreEvents<T> | CollaborativeSessionEvents<DocumentSessionMessages>
+	>
 	implements DocHandle<T>
 {
+	session!: CollaborativeSession<DocumentSessionMessages>;
 	/** Sync state for each peer we've communicated with (including inactive peers) */
 	private syncStates: Record<AgentPubKeyB64, Automerge.SyncState> = {};
 
 	constructor(
 		public client: CollaborativeSessionsClient,
 		public sessionId: string,
-		public acceptedPeers:
+		public acceptedCollaborators:
 			| Signal.State<AgentPubKey[]>
 			| Signal.Computed<AgentPubKey[]>,
 		protected doc: Automerge.Doc<T>,
 	) {
-		super(client, sessionId, acceptedPeers);
+		super();
 
-		this.on(
+		this.session = new CollaborativeSession(
+			this.client,
+			this.sessionId,
+			this.acceptedCollaborators,
+		);
+
+		this.session.on(
 			'peer-message',
 			(peerMessage: PeerMessagePayload<DocumentSessionMessages>) => {
 				switch (peerMessage.message.type) {
@@ -66,7 +76,7 @@ export class DocumentStore<T>
 				}
 			},
 		);
-		this.on('peer-joined', (payload: PeerJoinedPayload) =>
+		this.session.on('peer-joined', (payload: PeerJoinedPayload) =>
 			this.sendSyncMessage(encodeHashToBase64(payload.peer)),
 		);
 	}
@@ -90,7 +100,7 @@ export class DocumentStore<T>
 		const change = Automerge.getLastLocalChange(this.doc);
 
 		if (change) {
-			this.sendMessage(this.activePeers, {
+			this.session.sendMessage(this.session.activeCollaborators, {
 				type: 'change',
 				change,
 			});
@@ -102,7 +112,7 @@ export class DocumentStore<T>
 	}
 
 	private async syncWithPeers() {
-		this.activePeers.forEach(peerId =>
+		this.session.activeCollaborators.forEach(peerId =>
 			this.sendSyncMessage(encodeHashToBase64(peerId)),
 		);
 	}
@@ -121,7 +131,7 @@ export class DocumentStore<T>
 		);
 		if (message) {
 			this.syncStates[peerId] = newSyncState;
-			this.sendMessage([decodeHashFromBase64(peerId)], {
+			this.session.sendMessage([decodeHashFromBase64(peerId)], {
 				type: 'sync',
 				syncMessage: message,
 			});

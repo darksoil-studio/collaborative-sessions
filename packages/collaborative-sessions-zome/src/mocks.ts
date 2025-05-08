@@ -31,7 +31,10 @@ import {
 
 import { CollaborativeSessionsClient } from './collaborative-sessions-client.js';
 
-export class CollaborativeSessionsZomeMock extends ZomeMock implements AppClient {
+export class CollaborativeSessionsZomeMock
+	extends ZomeMock
+	implements AppClient
+{
 	constructor(myPubKey?: AgentPubKey) {
 		super(
 			'collaborative_sessions_test',

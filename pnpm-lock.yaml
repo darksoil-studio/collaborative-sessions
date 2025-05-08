@@ -83,6 +83,9 @@ importers:
       '@automerge/prosemirror':
         specifier: ^0.0.13
         version: 0.0.13
+      '@darksoil-studio/automerge-collaborative-prosemirror':
+        specifier: workspace:^0.500.0
+        version: link:../packages/automerge-collaborative-prosemirror
       '@darksoil-studio/automerge-collaborative-sessions':
         specifier: workspace:^0.500.0
         version: link:../packages/automerge-collaborative-sessions
@@ -162,6 +165,85 @@ importers:
       vite-plugin-wasm:
         specifier: ^3.3.0
         version: 3.4.1(vite@4.5.14)
+
+  packages/automerge-collaborative-prosemirror:
+    dependencies:
+      '@automerge/automerge':
+        specifier: ^2.2.9
+        version: 2.2.9
+      '@automerge/prosemirror':
+        specifier: ^0.0.13
+        version: 0.0.13
+      '@darksoil-studio/automerge-collaborative-sessions':
+        specifier: workspace:^0.500.0
+        version: link:../automerge-collaborative-sessions
+      '@darksoil-studio/collaborative-sessions-zome':
+        specifier: workspace:^0.500.0
+        version: link:../collaborative-sessions-zome
+      '@darksoil-studio/holochain-elements':
+        specifier: ^0.500.0
+        version: 0.500.0(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
+      '@darksoil-studio/holochain-signals':
+        specifier: ^0.500.0
+        version: 0.500.0
+      '@darksoil-studio/holochain-utils':
+        specifier: ^0.500.0
+        version: 0.500.0
+      '@darksoil-studio/profiles-provider':
+        specifier: ^0.500.0
+        version: 0.500.0(@floating-ui/utils@0.2.9)(@types/react@19.1.2)
+      '@holochain/client':
+        specifier: ^0.19.0
+        version: 0.19.0
+      '@lit/context':
+        specifier: ^1.0.0
+        version: 1.1.5
+      '@lit/localize':
+        specifier: ^0.12.0
+        version: 0.12.2
+      '@mdi/js':
+        specifier: ^7.2.0
+        version: 7.4.47
+      '@msgpack/msgpack':
+        specifier: ^2.8.0
+        version: 2.8.0
+      lit:
+        specifier: ^3.0.0
+        version: 3.3.0
+      prosemirror-example-setup:
+        specifier: ^1.2.2
+        version: 1.2.3
+      prosemirror-menu:
+        specifier: ^1.2.5
+        version: 1.2.5
+      prosemirror-model:
+        specifier: ^1.21.0
+        version: 1.25.1
+      prosemirror-state:
+        specifier: ^1.4.3
+        version: 1.4.3
+      prosemirror-transform:
+        specifier: ^1.9.0
+        version: 1.10.4
+      prosemirror-view:
+        specifier: ^1.33.6
+        version: 1.39.2
+      signal-polyfill:
+        specifier: ^0.2.2
+        version: 0.2.2
+    devDependencies:
+      '@custom-elements-manifest/analyzer':
+        specifier: ^0.10.3
+        version: 0.10.4
+      '@lit/localize-tools':
+        specifier: ^0.6.3
+        version: 0.6.10
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
+      typescript:
+        specifier: ^5.4.5
+        version: 5.8.3
 
   packages/automerge-collaborative-sessions:
     dependencies:
