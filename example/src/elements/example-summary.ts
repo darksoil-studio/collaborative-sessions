@@ -1,3 +1,4 @@
+import { basicSchemaAdapter } from '@automerge/prosemirror';
 import '@darksoil-studio/automerge-collaborative-prosemirror/dist/elements/collaborative-prosemirror.js';
 import {
 	hashProperty,
@@ -27,6 +28,7 @@ import '@shoelace-style/shoelace/dist/components/card/card.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { exampleSetup } from 'prosemirror-example-setup';
 
 import { exampleStoreContext } from '../context.js';
 import { ExampleStore } from '../example-store.js';
@@ -77,6 +79,7 @@ export class ExampleSummary extends SignalWatcher(LitElement) {
 			<collaborative-prosemirror
 				.sessionId=${encodeHashToBase64(this.exampleHash)}
 				.acceptedCollaborators=${this.acceptedCollaborators().get()}
+				.plugins=${exampleSetup({ schema: basicSchemaAdapter.schema })}
 				style="flex: 1"
 			></collaborative-prosemirror>
 		`;

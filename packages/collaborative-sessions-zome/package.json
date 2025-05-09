@@ -13,14 +13,10 @@
 	"main": "dist/index.js",
 	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
-	"files": [
-		"dist",
-		"locales",
-		"src"
-	],
+	"files": ["dist", "locales", "src"],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/darksoil-studio/collaborative-sessions-zome.git"
+		"url": "git+https://github.com/darksoil-studio/collaborative-sessions.git"
 	},
 	"exports": {
 		".": "./dist/index.js",

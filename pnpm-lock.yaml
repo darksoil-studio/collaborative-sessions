@@ -210,9 +210,6 @@ importers:
       lit:
         specifier: ^3.0.0
         version: 3.3.0
-      prosemirror-example-setup:
-        specifier: ^1.2.2
-        version: 1.2.3
       prosemirror-menu:
         specifier: ^1.2.5
         version: 1.2.5

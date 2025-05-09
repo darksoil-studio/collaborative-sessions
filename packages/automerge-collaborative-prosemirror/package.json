@@ -16,7 +16,7 @@
 	"files": ["dist", "locales", "src"],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/darksoil-studio/collaborative-sessions-zome.git"
+		"url": "git+https://github.com/darksoil-studio/collaborative-sessions.git"
 	},
 	"exports": {
 		".": "./dist/index.js",
@@ -38,7 +38,6 @@
 		"@mdi/js": "^7.2.0",
 		"@msgpack/msgpack": "^2.8.0",
 		"lit": "^3.0.0",
-		"prosemirror-example-setup": "^1.2.2",
 		"prosemirror-menu": "^1.2.5",
 		"prosemirror-model": "^1.21.0",
 		"prosemirror-state": "^1.4.3",
