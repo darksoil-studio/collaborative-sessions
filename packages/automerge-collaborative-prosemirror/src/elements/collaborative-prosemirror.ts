@@ -1,5 +1,6 @@
 import { next as Automerge } from '@automerge/automerge';
 import {
+	SchemaAdapter,
 	basicSchemaAdapter,
 	pmDocFromSpans,
 	syncPlugin,
@@ -15,8 +16,7 @@ import { AgentPubKey } from '@holochain/client';
 import { consume } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { exampleSetup } from 'prosemirror-example-setup';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState, Plugin, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 import { prosemirrorMenuStyles, prosemirrorStyles } from './styles.js';
@@ -29,6 +29,9 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	@property()
 	value!: string;
 
+	@property()
+	initialDoc: Automerge.Doc<{ text: string }> | undefined;
+
 	_acceptedCollaborators = new Signal.State<AgentPubKey[]>(
 		this.acceptedCollaborators,
 	);
@@ -39,6 +42,12 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 		return this._acceptedCollaborators ? this._acceptedCollaborators.get() : [];
 	}
 
+	@property()
+	plugins: Array<Plugin<unknown>> = [];
+
+	@property()
+	adapter: SchemaAdapter = basicSchemaAdapter;
+
 	@consume({ context: collaborativeSessionsClientContext })
 	client!: CollaborativeSessionsClient;
 
@@ -47,28 +56,35 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 
 	prosemirror!: EditorView;
 
-	async firstUpdated() {
-		const adapter = basicSchemaAdapter;
-		const initialValue = Automerge.from({
-			text: this.value || '',
-		});
+	public document!: DocumentStore<{ text: string }>;
 
-		const documentStore = new DocumentStore<{ text: string }>(
+	firstUpdated() {
+		const initialDoc = this.initialDoc
+			? this.initialDoc
+			: Automerge.from({
+					text: this.value || '',
+				});
+
+		this.document = new DocumentStore<{ text: string }>(
 			this.client,
 			this.sessionId,
 			this._acceptedCollaborators,
-			initialValue,
+			initialDoc,
 		);
 
 		this.prosemirror = new EditorView(this.el, {
 			state: EditorState.create({
 				doc: pmDocFromSpans(
-					adapter,
-					Automerge.spans(documentStore.docSync()!, ['text']),
+					this.adapter,
+					Automerge.spans(this.document.docSync()!, ['text']),
 				),
 				plugins: [
-					...exampleSetup({ schema: adapter.schema }),
-					syncPlugin({ adapter, handle: documentStore, path: ['text'] }),
+					...this.plugins,
+					syncPlugin({
+						adapter: this.adapter,
+						handle: this.document,
+						path: ['text'],
+					}),
 				],
 			}),
 			dispatchTransaction: (tx: Transaction) => {
