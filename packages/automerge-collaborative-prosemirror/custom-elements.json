@@ -91,12 +91,38 @@
             },
             {
               "kind": "field",
-              "name": "acceptedCollaborators"
+              "name": "initialDoc",
+              "type": {
+                "text": "Automerge.Doc<{ text: string }> | undefined"
+              },
+              "attribute": "initialDoc"
             },
             {
               "kind": "field",
               "name": "_acceptedCollaborators",
               "default": "new Signal.State<AgentPubKey[]>( this.acceptedCollaborators, )"
+            },
+            {
+              "kind": "field",
+              "name": "acceptedCollaborators"
+            },
+            {
+              "kind": "field",
+              "name": "plugins",
+              "type": {
+                "text": "Array<Plugin<unknown>>"
+              },
+              "default": "[]",
+              "attribute": "plugins"
+            },
+            {
+              "kind": "field",
+              "name": "adapter",
+              "type": {
+                "text": "SchemaAdapter"
+              },
+              "default": "basicSchemaAdapter",
+              "attribute": "adapter"
             },
             {
               "kind": "field",
@@ -118,6 +144,14 @@
               "type": {
                 "text": "EditorView"
               }
+            },
+            {
+              "kind": "field",
+              "name": "document",
+              "type": {
+                "text": "DocumentStore<{ text: string }>"
+              },
+              "privacy": "public"
             }
           ],
           "attributes": [
@@ -134,6 +168,29 @@
                 "text": "string"
               },
               "fieldName": "value"
+            },
+            {
+              "name": "initialDoc",
+              "type": {
+                "text": "Automerge.Doc<{ text: string }> | undefined"
+              },
+              "fieldName": "initialDoc"
+            },
+            {
+              "name": "plugins",
+              "type": {
+                "text": "Array<Plugin<unknown>>"
+              },
+              "default": "[]",
+              "fieldName": "plugins"
+            },
+            {
+              "name": "adapter",
+              "type": {
+                "text": "SchemaAdapter"
+              },
+              "default": "basicSchemaAdapter",
+              "fieldName": "adapter"
             }
           ],
           "mixins": [
