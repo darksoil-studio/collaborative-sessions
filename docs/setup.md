@@ -6,7 +6,7 @@
 1. Run this to scaffold this zome in your hApp:
 
 ```bash
-nix run github:darksoil-studio/collaborative-sessions-zome#scaffold
+nix run github:darksoil-studio/collaborative-sessions#scaffold
 ```
 
 This will do the following:
