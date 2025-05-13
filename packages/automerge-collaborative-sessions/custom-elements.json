@@ -167,6 +167,25 @@
                   }
                 }
               ]
+            },
+            {
+              "kind": "method",
+              "name": "patchCallback",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "patches",
+                  "type": {
+                    "text": "Patch[]"
+                  }
+                },
+                {
+                  "name": "info",
+                  "type": {
+                    "text": "PatchInfo<T>"
+                  }
+                }
+              ]
             }
           ],
           "superclass": {
