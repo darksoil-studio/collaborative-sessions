@@ -6,7 +6,10 @@ import {
 	pmDocFromSpans,
 	syncPlugin,
 } from '@automerge/prosemirror';
-import { DocumentStore } from '@darksoil-studio/automerge-collaborative-sessions';
+import {
+	DocHandleChangePayload,
+	DocumentStore,
+} from '@darksoil-studio/automerge-collaborative-sessions';
 import {
 	CollaborativeSessionsClient,
 	collaborativeSessionsClientContext,
@@ -31,7 +34,7 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	value!: string;
 
 	@property()
-	initialDoc: Automerge.Doc<{ text: string }> | undefined;
+	initialDocument: Automerge.Doc<unknown> | undefined;
 
 	_acceptedCollaborators = new Signal.State<AgentPubKey[]>(
 		this.acceptedCollaborators,
@@ -49,6 +52,9 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	@property()
 	schema: MappedSchemaSpec | undefined;
 
+	@property()
+	path: string[] = ['text'];
+
 	@consume({ context: collaborativeSessionsClientContext })
 	client!: CollaborativeSessionsClient;
 
@@ -57,37 +63,49 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 
 	prosemirror!: EditorView;
 
-	public document!: DocumentStore<{ text: string }>;
+	public document!: DocumentStore<unknown>;
 
 	firstUpdated() {
 		const adapter = this.schema
 			? new SchemaAdapter(this.schema)
 			: basicSchemaAdapter;
-		const initialDoc = this.initialDoc
-			? this.initialDoc
+		const initialDoc = this.initialDocument
+			? this.initialDocument
 			: Automerge.from({
 					text: this.value || '',
 				});
 
-		this.document = new DocumentStore<{ text: string }>(
+		this.document = new DocumentStore<unknown>(
 			this.client,
 			this.sessionId,
 			this._acceptedCollaborators,
 			initialDoc,
 		);
 
+		this.document.on('change', (change: DocHandleChangePayload<unknown>) => {
+			this.dispatchEvent(
+				new CustomEvent('document-change', {
+					bubbles: true,
+					composed: true,
+					detail: {
+						change,
+					},
+				}),
+			);
+		});
+
 		this.prosemirror = new EditorView(this.el, {
 			state: EditorState.create({
 				doc: pmDocFromSpans(
 					adapter,
-					Automerge.spans(this.document.docSync()!, ['text']),
+					Automerge.spans(this.document.docSync()!, this.path),
 				),
 				plugins: [
 					...this.plugins,
 					syncPlugin({
 						adapter: adapter,
 						handle: this.document,
-						path: ['text'],
+						path: this.path,
 					}),
 				],
 			}),

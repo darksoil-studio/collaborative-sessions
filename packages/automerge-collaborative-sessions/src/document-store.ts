@@ -1,4 +1,10 @@
-import { next as Automerge, Change, SyncMessage } from '@automerge/automerge';
+import {
+	next as Automerge,
+	Change,
+	Patch,
+	PatchInfo,
+	SyncMessage,
+} from '@automerge/automerge';
 import {
 	CollaborativeSession,
 	CollaborativeSessionEvents,
@@ -87,14 +93,7 @@ export class DocumentStore<T>
 		this.doc = Automerge.change(
 			this.doc,
 			{
-				patchCallback: (patches, info) => {
-					this.emit('change', {
-						doc: this.doc,
-						handle: this,
-						patches,
-						patchInfo: info,
-					} as DocHandleChangePayload<T>);
-				},
+				patchCallback: this.patchCallback.bind(this),
 			},
 			fn,
 		);
@@ -150,14 +149,7 @@ export class DocumentStore<T>
 			syncState,
 			message,
 			{
-				patchCallback: (patches, info) => {
-					this.emit('change', {
-						doc: this.doc,
-						handle: this,
-						patches,
-						patchInfo: info,
-					} as DocHandleChangePayload<T>);
-				},
+				patchCallback: this.patchCallback.bind(this),
 			},
 		);
 		this.doc = newDoc;
@@ -169,16 +161,18 @@ export class DocumentStore<T>
 
 	private handleChange(_peer: AgentPubKeyB64, change: Change) {
 		const [newDoc] = Automerge.applyChanges(this.doc, [change], {
-			patchCallback: (patches, info) => {
-				this.emit('change', {
-					doc: this.doc,
-					handle: this,
-					patches,
-					patchInfo: info,
-				} as DocHandleChangePayload<T>);
-			},
+			patchCallback: this.patchCallback.bind(this),
 		});
 
 		this.doc = newDoc;
+	}
+
+	private patchCallback(patches: Patch[], info: PatchInfo<T>) {
+		this.emit('change', {
+			doc: info.after,
+			handle: this,
+			patches,
+			patchInfo: info,
+		} as DocHandleChangePayload<T>);
 	}
 }

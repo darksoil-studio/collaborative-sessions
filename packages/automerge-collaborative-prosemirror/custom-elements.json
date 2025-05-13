@@ -91,11 +91,11 @@
             },
             {
               "kind": "field",
-              "name": "initialDoc",
+              "name": "initialDocument",
               "type": {
-                "text": "Automerge.Doc<{ text: string }> | undefined"
+                "text": "Automerge.Doc<unknown> | undefined"
               },
-              "attribute": "initialDoc"
+              "attribute": "initialDocument"
             },
             {
               "kind": "field",
@@ -125,6 +125,15 @@
             },
             {
               "kind": "field",
+              "name": "path",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "['text']",
+              "attribute": "path"
+            },
+            {
+              "kind": "field",
               "name": "client",
               "type": {
                 "text": "CollaborativeSessionsClient"
@@ -148,9 +157,17 @@
               "kind": "field",
               "name": "document",
               "type": {
-                "text": "DocumentStore<{ text: string }>"
+                "text": "DocumentStore<unknown>"
               },
               "privacy": "public"
+            }
+          ],
+          "events": [
+            {
+              "name": "document-change",
+              "type": {
+                "text": "CustomEvent"
+              }
             }
           ],
           "attributes": [
@@ -169,11 +186,11 @@
               "fieldName": "value"
             },
             {
-              "name": "initialDoc",
+              "name": "initialDocument",
               "type": {
-                "text": "Automerge.Doc<{ text: string }> | undefined"
+                "text": "Automerge.Doc<unknown> | undefined"
               },
-              "fieldName": "initialDoc"
+              "fieldName": "initialDocument"
             },
             {
               "name": "plugins",
@@ -189,6 +206,14 @@
                 "text": "MappedSchemaSpec | undefined"
               },
               "fieldName": "schema"
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "['text']",
+              "fieldName": "path"
             }
           ],
           "mixins": [
