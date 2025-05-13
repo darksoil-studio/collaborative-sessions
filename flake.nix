@@ -62,7 +62,7 @@
           postBuild = ''
             wrapProgram $out/bin/scaffold-remote-zome \
               --add-flags "collaborative-sessions-zome \
-                --coordinator-zome-name collaborative_sessions_coordinator \
+                --coordinator-zome-name collaborative_sessions \
                 --remote-zome-git-url github:darksoil-studio/collaborative-sessions \
                 --remote-npm-package-name @darksoil-studio/collaborative-sessions-zome \
                 --remote-zome-git-branch main-0.5 \
