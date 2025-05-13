@@ -9,40 +9,41 @@ import { decode, encode } from '@msgpack/msgpack';
 import { EventEmitter } from 'eventemitter3';
 
 import { CollaborativeSessionsClient } from './collaborative-sessions-client.js';
+import { RemoteSignal } from './types.js';
 import { effect } from './utils.js';
 
-export interface PeerMessagePayload<MESSAGES> {
-	peer: AgentPubKey;
+export interface MessageReceivedPayload<MESSAGES> {
+	collaborator: AgentPubKey;
 	message: MESSAGES;
 }
 
-export interface PeerJoinedPayload {
-	peer: AgentPubKey;
+export interface CollaboratorJoinedPayload {
+	collaborator: AgentPubKey;
 }
 
-export interface PeerLeftPayload {
-	peer: AgentPubKey;
+export interface CollaboratorLeftPayload {
+	collaborator: AgentPubKey;
 }
 
 export type CollaborativeSessionEvents<MESSAGES> =
 	| {
-			'peer-joined': (payload: PeerJoinedPayload) => void;
+			'collaborator-joined': (payload: CollaboratorJoinedPayload) => void;
 	  }
 	| {
-			'peer-message': (payload: PeerMessagePayload<MESSAGES>) => void;
+			'message-received': (payload: MessageReceivedPayload<MESSAGES>) => void;
 	  }
 	| {
-			'peer-left': (payload: PeerLeftPayload) => void;
+			'collaborator-left': (payload: CollaboratorLeftPayload) => void;
 	  };
 
-export interface PeerState {
+export interface CollaboratorState {
 	lastSeen: number;
 }
 
 export class CollaborativeSession<MESSAGES> extends EventEmitter<
 	CollaborativeSessionEvents<MESSAGES>
 > {
-	collaborators = new Signal.State<HoloHashMap<AgentPubKey, PeerState>>(
+	collaborators = new Signal.State<HoloHashMap<AgentPubKey, CollaboratorState>>(
 		new HoloHashMap(),
 	);
 
@@ -51,6 +52,8 @@ export class CollaborativeSession<MESSAGES> extends EventEmitter<
 	}
 
 	joined = true;
+
+	ignoredMessages: HoloHashMap<AgentPubKey, RemoteSignal[]> = new HoloHashMap();
 
 	constructor(
 		public client: CollaborativeSessionsClient,
@@ -76,45 +79,39 @@ export class CollaborativeSession<MESSAGES> extends EventEmitter<
 				console.warn(
 					`Received a message from an invalid peer ${encodeHashToBase64(signal.provenance)}: ignoring.`,
 				);
+				if (!this.ignoredMessages.has(signal.provenance)) {
+					this.ignoredMessages.set(signal.provenance, []);
+				}
+				this.ignoredMessages.get(signal.provenance).push(signal.remote_signal);
+
+				// TODO: implement rate limiting
+
 				return;
 			}
 
-			const peers = this.collaborators.get();
-			const peer = peers.get(signal.provenance);
-
-			switch (signal.remote_signal.type) {
-				case 'Presence':
-					if (!peer) {
-						this.emit('peer-joined', {
-							peer: signal.provenance,
-						});
-					}
-					peers.set(signal.provenance, {
-						lastSeen: Date.now(),
-					});
-					break;
-				case 'SessionMessage':
-					this.emit('peer-message', {
-						peer: signal.provenance,
-						message: decode(signal.remote_signal.message) as MESSAGES,
-					});
-					peers.set(signal.provenance, {
-						lastSeen: Date.now(),
-					});
-					break;
-				case 'LeaveSession':
-					peers.delete(signal.provenance);
-					this.emit('peer-left', {
-						peer: signal.provenance,
-					});
-					break;
-			}
-			this.collaborators.set(peers);
+			this.handleCollaboratorMessage(signal.provenance, signal.remote_signal);
 		});
 
 		let interval: number | undefined;
 		effect(() => {
 			const collaborators = this.acceptedCollaborators.get();
+
+			for (const [ignoredCollaborator, messages] of Array.from(
+				this.ignoredMessages.entries(),
+			)) {
+				if (
+					collaborators.find(
+						c =>
+							encodeHashToBase64(c) === encodeHashToBase64(ignoredCollaborator),
+					)
+				) {
+					for (const message of messages) {
+						this.handleCollaboratorMessage(ignoredCollaborator, message);
+					}
+					this.ignoredMessages.delete(ignoredCollaborator);
+				}
+			}
+
 			if (interval) clearInterval(interval);
 			interval = setInterval(() => {
 				if (!this.joined) return;
@@ -128,6 +125,43 @@ export class CollaborativeSession<MESSAGES> extends EventEmitter<
 				);
 			}, 3000);
 		});
+	}
+
+	private handleCollaboratorMessage(
+		collaborator: AgentPubKey,
+		message: RemoteSignal,
+	) {
+		const collaborators = this.collaborators.get();
+		const collaboratorState = collaborators.get(collaborator);
+
+		switch (message.type) {
+			case 'Presence':
+				if (!collaboratorState) {
+					this.emit('collaborator-joined', {
+						collaborator,
+					});
+				}
+				collaborators.set(collaborator, {
+					lastSeen: Date.now(),
+				});
+				break;
+			case 'SessionMessage':
+				this.emit('message-received', {
+					collaborator,
+					message: decode(message.message) as MESSAGES,
+				});
+				collaborators.set(collaborator, {
+					lastSeen: Date.now(),
+				});
+				break;
+			case 'LeaveSession':
+				collaborators.delete(collaborator);
+				this.emit('collaborator-left', {
+					collaborator,
+				});
+				break;
+		}
+		this.collaborators.set(collaborators);
 	}
 
 	async join() {

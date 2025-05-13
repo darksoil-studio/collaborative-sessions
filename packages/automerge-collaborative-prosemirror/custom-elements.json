@@ -117,12 +117,11 @@
             },
             {
               "kind": "field",
-              "name": "adapter",
+              "name": "schema",
               "type": {
-                "text": "SchemaAdapter"
+                "text": "MappedSchemaSpec | undefined"
               },
-              "default": "basicSchemaAdapter",
-              "attribute": "adapter"
+              "attribute": "schema"
             },
             {
               "kind": "field",
@@ -185,12 +184,11 @@
               "fieldName": "plugins"
             },
             {
-              "name": "adapter",
+              "name": "schema",
               "type": {
-                "text": "SchemaAdapter"
+                "text": "MappedSchemaSpec | undefined"
               },
-              "default": "basicSchemaAdapter",
-              "fieldName": "adapter"
+              "fieldName": "schema"
             }
           ],
           "mixins": [
