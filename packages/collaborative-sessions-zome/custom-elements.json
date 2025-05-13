@@ -70,7 +70,7 @@
             {
               "kind": "field",
               "name": "collaborators",
-              "default": "new Signal.State<HoloHashMap<AgentPubKey, PeerState>>( new HoloHashMap(), )"
+              "default": "new Signal.State<HoloHashMap<AgentPubKey, CollaboratorState>>( new HoloHashMap(), )"
             },
             {
               "kind": "field",
@@ -87,6 +87,33 @@
                 "text": "boolean"
               },
               "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "ignoredMessages",
+              "type": {
+                "text": "HoloHashMap<AgentPubKey, RemoteSignal[]>"
+              },
+              "default": "new HoloHashMap()"
+            },
+            {
+              "kind": "method",
+              "name": "handleCollaboratorMessage",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "collaborator",
+                  "type": {
+                    "text": "AgentPubKey"
+                  }
+                },
+                {
+                  "name": "message",
+                  "type": {
+                    "text": "RemoteSignal"
+                  }
+                }
+              ]
             },
             {
               "kind": "method",

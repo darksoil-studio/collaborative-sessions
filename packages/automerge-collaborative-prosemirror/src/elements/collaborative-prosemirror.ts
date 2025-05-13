@@ -1,5 +1,6 @@
 import { next as Automerge } from '@automerge/automerge';
 import {
+	MappedSchemaSpec,
 	SchemaAdapter,
 	basicSchemaAdapter,
 	pmDocFromSpans,
@@ -46,7 +47,7 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	plugins: Array<Plugin<unknown>> = [];
 
 	@property()
-	adapter: SchemaAdapter = basicSchemaAdapter;
+	schema: MappedSchemaSpec | undefined;
 
 	@consume({ context: collaborativeSessionsClientContext })
 	client!: CollaborativeSessionsClient;
@@ -59,6 +60,9 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	public document!: DocumentStore<{ text: string }>;
 
 	firstUpdated() {
+		const adapter = this.schema
+			? new SchemaAdapter(this.schema)
+			: basicSchemaAdapter;
 		const initialDoc = this.initialDoc
 			? this.initialDoc
 			: Automerge.from({
@@ -75,13 +79,13 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 		this.prosemirror = new EditorView(this.el, {
 			state: EditorState.create({
 				doc: pmDocFromSpans(
-					this.adapter,
+					adapter,
 					Automerge.spans(this.document.docSync()!, ['text']),
 				),
 				plugins: [
 					...this.plugins,
 					syncPlugin({
-						adapter: this.adapter,
+						adapter: adapter,
 						handle: this.document,
 						path: ['text'],
 					}),
@@ -94,13 +98,24 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	}
 
 	render() {
-		return html`<div id="editor" style="flex: 1"></div>`;
+		return html`<div id="editor" style="display:flex; flex: 1"></div>`;
 	}
 
 	static styles = [
 		css`
 			:host {
 				display: flex;
+			}
+			[contenteditable]:active,
+			[contenteditable]:focus {
+				border: none;
+				outline: none;
+			}
+			.ProseMirror {
+				flex: 1;
+			}
+			p {
+				margin: 0;
 			}
 		`,
 		prosemirrorStyles,

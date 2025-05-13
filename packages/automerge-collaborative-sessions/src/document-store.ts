@@ -3,8 +3,8 @@ import {
 	CollaborativeSession,
 	CollaborativeSessionEvents,
 	CollaborativeSessionsClient,
-	PeerJoinedPayload,
-	PeerMessagePayload,
+	CollaboratorJoinedPayload,
+	MessageReceivedPayload,
 } from '@darksoil-studio/collaborative-sessions-zome';
 import { Signal } from '@darksoil-studio/holochain-signals';
 import {
@@ -58,26 +58,28 @@ export class DocumentStore<T>
 		);
 
 		this.session.on(
-			'peer-message',
-			(peerMessage: PeerMessagePayload<DocumentSessionMessages>) => {
-				switch (peerMessage.message.type) {
+			'message-received',
+			(messageReceived: MessageReceivedPayload<DocumentSessionMessages>) => {
+				switch (messageReceived.message.type) {
 					case 'sync':
 						this.handleSyncMessage(
-							encodeHashToBase64(peerMessage.peer),
-							peerMessage.message.syncMessage,
+							encodeHashToBase64(messageReceived.collaborator),
+							messageReceived.message.syncMessage,
 						);
 						return;
 					case 'change':
 						this.handleChange(
-							encodeHashToBase64(peerMessage.peer),
-							peerMessage.message.change,
+							encodeHashToBase64(messageReceived.collaborator),
+							messageReceived.message.change,
 						);
 						return;
 				}
 			},
 		);
-		this.session.on('peer-joined', (payload: PeerJoinedPayload) =>
-			this.sendSyncMessage(encodeHashToBase64(payload.peer)),
+		this.session.on(
+			'collaborator-joined',
+			(payload: CollaboratorJoinedPayload) =>
+				this.sendSyncMessage(encodeHashToBase64(payload.collaborator)),
 		);
 	}
 
