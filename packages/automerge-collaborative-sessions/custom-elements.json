@@ -60,18 +60,12 @@
     },
     {
       "kind": "javascript-module",
-      "path": "src/doc-handle.ts",
-      "declarations": [],
-      "exports": []
-    },
-    {
-      "kind": "javascript-module",
-      "path": "src/document-store.ts",
+      "path": "src/collaborative-document.ts",
       "declarations": [
         {
           "kind": "class",
           "description": "",
-          "name": "DocumentStore",
+          "name": "CollaborativeDocument",
           "members": [
             {
               "kind": "field",
@@ -79,6 +73,7 @@
               "type": {
                 "text": "CollaborativeSession<DocumentSessionMessages>"
               },
+              "privacy": "public",
               "default": "new CollaborativeSession( this.client, this.sessionId, this.acceptedCollaborators, )"
             },
             {
@@ -197,13 +192,39 @@
       "exports": [
         {
           "kind": "js",
-          "name": "DocumentStore",
+          "name": "CollaborativeDocument",
           "declaration": {
-            "name": "DocumentStore",
-            "module": "src/document-store.ts"
+            "name": "CollaborativeDocument",
+            "module": "src/collaborative-document.ts"
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/context.ts",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "collaborativeDocumentContext"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "collaborativeDocumentContext",
+          "declaration": {
+            "name": "collaborativeDocumentContext",
+            "module": "src/context.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/doc-handle.ts",
+      "declarations": [],
+      "exports": []
     },
     {
       "kind": "javascript-module",
@@ -215,7 +236,15 @@
           "name": "*",
           "declaration": {
             "name": "*",
-            "package": "./document-store.js"
+            "package": "./collaborative-document.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./context.js"
           }
         },
         {
@@ -224,6 +253,114 @@
           "declaration": {
             "name": "*",
             "package": "./doc-handle.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/collaborative-document-context.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "CollaborativeDocumentContext",
+          "members": [
+            {
+              "kind": "field",
+              "name": "collaborativeSessionsClient",
+              "type": {
+                "text": "CollaborativeSessionsClient"
+              },
+              "attribute": "collaborativeSessionsClient"
+            },
+            {
+              "kind": "field",
+              "name": "sessionId",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "session-id"
+            },
+            {
+              "kind": "field",
+              "name": "document",
+              "type": {
+                "text": "CollaborativeDocument<unknown>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "initialDocument",
+              "type": {
+                "text": "Automerge.Doc<unknown>"
+              },
+              "attribute": "initialDocument"
+            },
+            {
+              "kind": "field",
+              "name": "_acceptedCollaborators",
+              "default": "new Signal.State<AgentPubKey[]>( this.acceptedCollaborators, )"
+            },
+            {
+              "kind": "field",
+              "name": "acceptedCollaborators"
+            }
+          ],
+          "events": [
+            {
+              "name": "document-change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "collaborativeSessionsClient",
+              "type": {
+                "text": "CollaborativeSessionsClient"
+              },
+              "fieldName": "collaborativeSessionsClient"
+            },
+            {
+              "name": "session-id",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "sessionId"
+            },
+            {
+              "name": "initialDocument",
+              "type": {
+                "text": "Automerge.Doc<unknown>"
+              },
+              "fieldName": "initialDocument"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "collaborative-document-context",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "CollaborativeDocumentContext",
+          "declaration": {
+            "name": "CollaborativeDocumentContext",
+            "module": "src/elements/collaborative-document-context.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "collaborative-document-context",
+          "declaration": {
+            "name": "CollaborativeDocumentContext",
+            "module": "src/elements/collaborative-document-context.ts"
           }
         }
       ]

@@ -37,13 +37,11 @@ export type DocumentSessionMessages =
 			change: Change;
 	  };
 
-export class DocumentStore<T>
-	extends EventEmitter<
-		DocumentStoreEvents<T> | CollaborativeSessionEvents<DocumentSessionMessages>
-	>
+export class CollaborativeDocument<T>
+	extends EventEmitter<DocumentStoreEvents<T>>
 	implements DocHandle<T>
 {
-	session!: CollaborativeSession<DocumentSessionMessages>;
+	public session!: CollaborativeSession<DocumentSessionMessages>;
 	/** Sync state for each peer we've communicated with (including inactive peers) */
 	private syncStates: Record<AgentPubKeyB64, Automerge.SyncState> = {};
 

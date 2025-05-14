@@ -7,16 +7,15 @@ import {
 	syncPlugin,
 } from '@automerge/prosemirror';
 import {
-	DocHandleChangePayload,
-	DocumentStore,
+	CollaborativeDocument,
+	collaborativeDocumentContext,
 } from '@darksoil-studio/automerge-collaborative-sessions';
 import {
 	CollaborativeSessionsClient,
 	collaborativeSessionsClientContext,
 } from '@darksoil-studio/collaborative-sessions-zome';
 import { sharedStyles } from '@darksoil-studio/holochain-elements';
-import { Signal, SignalWatcher } from '@darksoil-studio/holochain-signals';
-import { AgentPubKey } from '@holochain/client';
+import { SignalWatcher } from '@darksoil-studio/holochain-signals';
 import { consume } from '@lit/context';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
@@ -28,23 +27,7 @@ import { prosemirrorMenuStyles, prosemirrorStyles } from './styles.js';
 @customElement('collaborative-prosemirror')
 export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	@property()
-	sessionId!: string;
-
-	@property()
 	value!: string;
-
-	@property()
-	initialDocument: Automerge.Doc<unknown> | undefined;
-
-	_acceptedCollaborators = new Signal.State<AgentPubKey[]>(
-		this.acceptedCollaborators,
-	);
-	set acceptedCollaborators(collaborators: Array<AgentPubKey>) {
-		this._acceptedCollaborators.set(collaborators);
-	}
-	get acceptedCollaborators() {
-		return this._acceptedCollaborators ? this._acceptedCollaborators.get() : [];
-	}
 
 	@property()
 	plugins: Array<Plugin<unknown>> = [];
@@ -63,36 +46,14 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 
 	prosemirror!: EditorView;
 
-	public document!: DocumentStore<unknown>;
+	@consume({ context: collaborativeDocumentContext })
+	@property()
+	public document!: CollaborativeDocument<unknown>;
 
 	firstUpdated() {
 		const adapter = this.schema
 			? new SchemaAdapter(this.schema)
 			: basicSchemaAdapter;
-		const initialDoc = this.initialDocument
-			? this.initialDocument
-			: Automerge.from({
-					text: this.value || '',
-				});
-
-		this.document = new DocumentStore<unknown>(
-			this.client,
-			this.sessionId,
-			this._acceptedCollaborators,
-			initialDoc,
-		);
-
-		this.document.on('change', (change: DocHandleChangePayload<unknown>) => {
-			this.dispatchEvent(
-				new CustomEvent('document-change', {
-					bubbles: true,
-					composed: true,
-					detail: {
-						change,
-					},
-				}),
-			);
-		});
 
 		this.prosemirror = new EditorView(this.el, {
 			state: EditorState.create({
@@ -116,21 +77,26 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	}
 
 	render() {
-		return html`<div id="editor" style="display:flex; flex: 1"></div>`;
+		return html`<div id="editor"></div>`;
 	}
 
 	static styles = [
 		css`
 			:host {
-				display: flex;
+				position: relative;
 			}
+			.editor {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				left: 0;
+			}
+
 			[contenteditable]:active,
 			[contenteditable]:focus {
 				border: none;
 				outline: none;
-			}
-			.ProseMirror {
-				flex: 1;
 			}
 			p {
 				margin: 0;
