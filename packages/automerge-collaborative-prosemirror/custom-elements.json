@@ -75,36 +75,11 @@
           "members": [
             {
               "kind": "field",
-              "name": "sessionId",
-              "type": {
-                "text": "string"
-              },
-              "attribute": "sessionId"
-            },
-            {
-              "kind": "field",
               "name": "value",
               "type": {
                 "text": "string"
               },
               "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "initialDocument",
-              "type": {
-                "text": "Automerge.Doc<unknown> | undefined"
-              },
-              "attribute": "initialDocument"
-            },
-            {
-              "kind": "field",
-              "name": "_acceptedCollaborators",
-              "default": "new Signal.State<AgentPubKey[]>( this.acceptedCollaborators, )"
-            },
-            {
-              "kind": "field",
-              "name": "acceptedCollaborators"
             },
             {
               "kind": "field",
@@ -157,40 +132,19 @@
               "kind": "field",
               "name": "document",
               "type": {
-                "text": "DocumentStore<unknown>"
+                "text": "CollaborativeDocument<unknown>"
               },
-              "privacy": "public"
-            }
-          ],
-          "events": [
-            {
-              "name": "document-change",
-              "type": {
-                "text": "CustomEvent"
-              }
+              "privacy": "public",
+              "attribute": "document"
             }
           ],
           "attributes": [
-            {
-              "name": "sessionId",
-              "type": {
-                "text": "string"
-              },
-              "fieldName": "sessionId"
-            },
             {
               "name": "value",
               "type": {
                 "text": "string"
               },
               "fieldName": "value"
-            },
-            {
-              "name": "initialDocument",
-              "type": {
-                "text": "Automerge.Doc<unknown> | undefined"
-              },
-              "fieldName": "initialDocument"
             },
             {
               "name": "plugins",
@@ -214,6 +168,13 @@
               },
               "default": "['text']",
               "fieldName": "path"
+            },
+            {
+              "name": "document",
+              "type": {
+                "text": "CollaborativeDocument<unknown>"
+              },
+              "fieldName": "document"
             }
           ],
           "mixins": [

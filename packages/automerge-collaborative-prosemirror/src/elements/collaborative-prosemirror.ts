@@ -55,7 +55,7 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 			? new SchemaAdapter(this.schema)
 			: basicSchemaAdapter;
 
-		this.prosemirror = new EditorView(this.el, {
+		this.prosemirror = new EditorView(this.shadowRoot, {
 			state: EditorState.create({
 				doc: pmDocFromSpans(
 					adapter,
@@ -77,20 +77,18 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	}
 
 	render() {
-		return html`<div id="editor"></div>`;
+		return html``;
 	}
 
 	static styles = [
 		css`
 			:host {
-				position: relative;
 			}
-			.editor {
-				position: absolute;
-				top: 0;
-				bottom: 0;
-				right: 0;
-				left: 0;
+			#editor {
+				min-height: 100%;
+			}
+			.ProseMirror {
+				min-height: 100%;
 			}
 
 			[contenteditable]:active,
