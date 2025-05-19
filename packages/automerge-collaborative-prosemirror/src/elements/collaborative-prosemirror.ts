@@ -34,7 +34,13 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	plugins: Array<Plugin<unknown>> = [];
 
 	@property()
-	schema: MappedSchemaSpec | undefined;
+	schemaSpec: MappedSchemaSpec | undefined;
+
+	get schema() {
+		return this.adapter.schema;
+	}
+
+	adapter!: SchemaAdapter;
 
 	@property()
 	path: string[] = ['text'];
@@ -55,14 +61,14 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	public document!: CollaborativeDocument<unknown>;
 
 	firstUpdated() {
-		const adapter = this.schema
-			? new SchemaAdapter(this.schema)
+		this.adapter = this.schemaSpec
+			? new SchemaAdapter(this.schemaSpec)
 			: basicSchemaAdapter;
 
 		const plugins = [
 			...this.plugins,
 			syncPlugin({
-				adapter: adapter,
+				adapter: this.adapter,
 				handle: this.document,
 				path: this.path,
 			}),
@@ -72,7 +78,7 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 		this.prosemirror = new EditorView(this.shadowRoot, {
 			state: EditorState.create({
 				doc: pmDocFromSpans(
-					adapter,
+					this.adapter,
 					Automerge.spans(this.document.docSync()!, this.path),
 				),
 				plugins,

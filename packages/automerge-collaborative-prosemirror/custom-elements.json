@@ -120,11 +120,23 @@
             },
             {
               "kind": "field",
-              "name": "schema",
+              "name": "schemaSpec",
               "type": {
                 "text": "MappedSchemaSpec | undefined"
               },
-              "attribute": "schema"
+              "attribute": "schemaSpec"
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "adapter",
+              "type": {
+                "text": "SchemaAdapter"
+              }
             },
             {
               "kind": "field",
@@ -191,11 +203,11 @@
               "fieldName": "plugins"
             },
             {
-              "name": "schema",
+              "name": "schemaSpec",
               "type": {
                 "text": "MappedSchemaSpec | undefined"
               },
-              "fieldName": "schema"
+              "fieldName": "schemaSpec"
             },
             {
               "name": "path",
