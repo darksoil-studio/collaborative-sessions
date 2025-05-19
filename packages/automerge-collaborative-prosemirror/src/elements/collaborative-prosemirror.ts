@@ -68,7 +68,6 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 			}),
 		];
 		if (this.placeholder) plugins.push(placeholder(this.placeholder));
-		console.log(plugins);
 
 		this.prosemirror = new EditorView(this.shadowRoot, {
 			state: EditorState.create({
