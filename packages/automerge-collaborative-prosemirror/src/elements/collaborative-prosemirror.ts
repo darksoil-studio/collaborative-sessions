@@ -22,6 +22,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { EditorState, Plugin, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
+import placeholder from '../placeholder.js';
 import { prosemirrorMenuStyles, prosemirrorStyles } from './styles.js';
 
 @customElement('collaborative-prosemirror')
@@ -37,6 +38,9 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 
 	@property()
 	path: string[] = ['text'];
+
+	@property()
+	placeholder: string | undefined;
 
 	@consume({ context: collaborativeSessionsClientContext })
 	client!: CollaborativeSessionsClient;
@@ -55,20 +59,24 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 			? new SchemaAdapter(this.schema)
 			: basicSchemaAdapter;
 
+		const plugins = [
+			...this.plugins,
+			syncPlugin({
+				adapter: adapter,
+				handle: this.document,
+				path: this.path,
+			}),
+		];
+		if (this.placeholder) plugins.push(placeholder(this.placeholder));
+		console.log(plugins);
+
 		this.prosemirror = new EditorView(this.shadowRoot, {
 			state: EditorState.create({
 				doc: pmDocFromSpans(
 					adapter,
 					Automerge.spans(this.document.docSync()!, this.path),
 				),
-				plugins: [
-					...this.plugins,
-					syncPlugin({
-						adapter: adapter,
-						handle: this.document,
-						path: this.path,
-					}),
-				],
+				plugins,
 			}),
 			dispatchTransaction: (tx: Transaction) => {
 				this.prosemirror!.updateState(this.prosemirror!.state.apply(tx));
@@ -89,6 +97,13 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 			}
 			.ProseMirror {
 				min-height: 100%;
+			}
+
+			.ProseMirror[data-placeholder]::before {
+				position: absolute;
+				content: attr(data-placeholder);
+				pointer-events: none;
+				color: var(--sl-color-gray-700);
 			}
 
 			[contenteditable]:active,
