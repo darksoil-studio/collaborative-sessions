@@ -66,6 +66,34 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/placeholder.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "placeholder",
+          "parameters": [
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "placeholder",
+            "module": "src/placeholder.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/elements/collaborative-prosemirror.ts",
       "declarations": [
         {
@@ -106,6 +134,14 @@
               },
               "default": "['text']",
               "attribute": "path"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "placeholder"
             },
             {
               "kind": "field",
@@ -168,6 +204,13 @@
               },
               "default": "['text']",
               "fieldName": "path"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "placeholder"
             },
             {
               "name": "document",
