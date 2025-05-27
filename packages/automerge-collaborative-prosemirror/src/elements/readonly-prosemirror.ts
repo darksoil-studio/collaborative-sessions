@@ -6,27 +6,17 @@ import {
 	pmDocFromSpans,
 	syncPlugin,
 } from '@automerge/prosemirror';
-import {
-	CollaborativeDocument,
-	collaborativeDocumentContext,
-} from '@darksoil-studio/automerge-collaborative-sessions';
-import {
-	CollaborativeSessionsClient,
-	collaborativeSessionsClientContext,
-} from '@darksoil-studio/collaborative-sessions-zome';
 import { sharedStyles } from '@darksoil-studio/holochain-elements';
 import { SignalWatcher } from '@darksoil-studio/holochain-signals';
-import { consume } from '@lit/context';
-import { LitElement, css, html } from 'lit';
+import { LitElement, PropertyValues, css, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { EditorState, Plugin, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-import placeholder from '../placeholder.js';
 import { prosemirrorMenuStyles, prosemirrorStyles } from './styles.js';
 
-@customElement('collaborative-prosemirror')
-export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
+@customElement('readonly-prosemirror')
+export class ReadonlyProsemirror extends SignalWatcher(LitElement) {
 	@property()
 	plugins: Array<Plugin<unknown>> = [];
 
@@ -43,46 +33,58 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	path: string[] = ['text'];
 
 	@property()
+	document!: Automerge.Doc<unknown>;
+
+	@property()
 	styles: string[] = [];
 
-	@property()
-	placeholder: string | undefined;
-
-	@consume({ context: collaborativeSessionsClientContext })
-	client!: CollaborativeSessionsClient;
-
 	prosemirror!: EditorView;
-
-	@consume({ context: collaborativeDocumentContext })
-	@property()
-	public document!: CollaborativeDocument<unknown>;
 
 	firstUpdated() {
 		this.adapter = this.schemaSpec
 			? new SchemaAdapter(this.schemaSpec)
 			: basicSchemaAdapter;
+		this.setupProsemirror();
+	}
 
-		const plugins = [
-			...this.plugins,
-			syncPlugin({
-				adapter: this.adapter,
-				handle: this.document,
-				path: this.path,
-			}),
-		];
-		if (this.placeholder) plugins.push(placeholder(this.placeholder));
+	updated(changed: PropertyValues) {
+		super.updated(changed);
+		if (changed.has('document')) {
+			this.setupProsemirror();
+		}
+	}
 
+	setupProsemirror() {
+		if (this.prosemirror) {
+			const div = this.shadowRoot?.querySelector('div');
+			if (div) {
+				this.shadowRoot?.removeChild(div);
+			}
+		}
 		this.prosemirror = new EditorView(this.shadowRoot, {
 			state: EditorState.create({
 				doc: pmDocFromSpans(
 					this.adapter,
-					Automerge.spans(this.document.docSync()!, this.path),
+					Automerge.spans(this.document, this.path),
 				),
-				plugins,
+				plugins: [
+					syncPlugin({
+						adapter: this.adapter,
+						handle: {
+							change(fn) {},
+							docSync: () => this.document,
+							off(event, callback) {},
+							on(event, callback) {},
+						},
+						path: this.path,
+					}),
+					...this.plugins,
+				],
 			}),
 			dispatchTransaction: (tx: Transaction) => {
 				this.prosemirror!.updateState(this.prosemirror!.state.apply(tx));
 			},
+			editable: () => false,
 		});
 	}
 
@@ -98,9 +100,7 @@ export class CollaborativeProsemirror extends SignalWatcher(LitElement) {
 	static styles = [
 		css`
 			:host {
-			}
-			#editor {
-				min-height: 100%;
+				pointer-events: none;
 			}
 			.ProseMirror {
 				min-height: 100%;
