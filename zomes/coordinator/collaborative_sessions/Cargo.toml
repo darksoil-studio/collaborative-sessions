@@ -1,11 +1,11 @@
 [package]
-name = "collaborative_sessions_coordinator"
+name = "collaborative_sessions"
 version = "0.0.1"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-name = "collaborative_sessions_coordinator"
+name = "collaborative_sessions"
 
 [dependencies]
 hdk = { workspace = true }
