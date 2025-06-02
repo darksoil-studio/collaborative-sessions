@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["RemoteSignal"],"fn":["init","recv_remote_signal","send_leave_session_signal","send_presence_signal","send_session_message"],"struct":["SendLeaveSessionSignalInput","SendPresenceSignalInput","SendSessionMessageInput","SessionMessage","Signal"]};
