@@ -11,8 +11,7 @@
             inputs'.profiles-zome.packages.profiles_integrity;
           profiles = inputs'.profiles-zome.packages.profiles;
           # This overrides all the "bundled" properties for the DNA manifest
-          collaborative_sessions =
-            self'.packages.collaborative_sessions_coordinator;
+          collaborative_sessions = self'.packages.collaborative_sessions;
           example_integrity = self'.packages.example_integrity;
           example = self'.packages.example;
         };

@@ -1,5 +1,7 @@
+import { next as Automerge } from '@automerge/automerge';
 import { basicSchemaAdapter } from '@automerge/prosemirror';
 import '@darksoil-studio/automerge-collaborative-prosemirror/dist/elements/collaborative-prosemirror.js';
+import '@darksoil-studio/automerge-collaborative-sessions/dist/elements/collaborative-document-context.js';
 import {
 	hashProperty,
 	sharedStyles,
@@ -76,12 +78,19 @@ export class ExampleSummary extends SignalWatcher(LitElement) {
 
 	renderSummary(entryRecord: EntryRecord<Example>) {
 		return html`
-			<collaborative-prosemirror
+			<collaborative-document-context
 				.sessionId=${encodeHashToBase64(this.exampleHash)}
 				.acceptedCollaborators=${this.acceptedCollaborators().get()}
-				.plugins=${exampleSetup({ schema: basicSchemaAdapter.schema })}
-				style="flex: 1"
-			></collaborative-prosemirror>
+				.initialDocument=${Automerge.from({
+					text: entryRecord.entry.text,
+				})}
+			>
+				<collaborative-prosemirror
+					.plugins=${exampleSetup({ schema: basicSchemaAdapter.schema })}
+					placeholder="Write your text here..."
+					style="flex: 1"
+				></collaborative-prosemirror>
+			</collaborative-document-context>
 		`;
 	}
 
