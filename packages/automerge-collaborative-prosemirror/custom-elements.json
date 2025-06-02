@@ -66,6 +66,34 @@
     },
     {
       "kind": "javascript-module",
+      "path": "src/placeholder.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "placeholder",
+          "parameters": [
+            {
+              "name": "text",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "placeholder",
+            "module": "src/placeholder.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "src/elements/collaborative-prosemirror.ts",
       "declarations": [
         {
@@ -73,39 +101,6 @@
           "description": "",
           "name": "CollaborativeProsemirror",
           "members": [
-            {
-              "kind": "field",
-              "name": "sessionId",
-              "type": {
-                "text": "string"
-              },
-              "attribute": "sessionId"
-            },
-            {
-              "kind": "field",
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "attribute": "value"
-            },
-            {
-              "kind": "field",
-              "name": "initialDoc",
-              "type": {
-                "text": "Automerge.Doc<{ text: string }> | undefined"
-              },
-              "attribute": "initialDoc"
-            },
-            {
-              "kind": "field",
-              "name": "_acceptedCollaborators",
-              "default": "new Signal.State<AgentPubKey[]>( this.acceptedCollaborators, )"
-            },
-            {
-              "kind": "field",
-              "name": "acceptedCollaborators"
-            },
             {
               "kind": "field",
               "name": "plugins",
@@ -117,24 +112,46 @@
             },
             {
               "kind": "field",
-              "name": "schema",
+              "name": "schemaSpec",
               "type": {
                 "text": "MappedSchemaSpec | undefined"
               },
-              "attribute": "schema"
+              "attribute": "schemaSpec"
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "adapter",
+              "type": {
+                "text": "SchemaAdapter"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "path",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "['text']",
+              "attribute": "path"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string | undefined"
+              },
+              "attribute": "placeholder"
             },
             {
               "kind": "field",
               "name": "client",
               "type": {
                 "text": "CollaborativeSessionsClient"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "el",
-              "type": {
-                "text": "HTMLElement"
               }
             },
             {
@@ -148,33 +165,13 @@
               "kind": "field",
               "name": "document",
               "type": {
-                "text": "DocumentStore<{ text: string }>"
+                "text": "CollaborativeDocument<unknown>"
               },
-              "privacy": "public"
+              "privacy": "public",
+              "attribute": "document"
             }
           ],
           "attributes": [
-            {
-              "name": "sessionId",
-              "type": {
-                "text": "string"
-              },
-              "fieldName": "sessionId"
-            },
-            {
-              "name": "value",
-              "type": {
-                "text": "string"
-              },
-              "fieldName": "value"
-            },
-            {
-              "name": "initialDoc",
-              "type": {
-                "text": "Automerge.Doc<{ text: string }> | undefined"
-              },
-              "fieldName": "initialDoc"
-            },
             {
               "name": "plugins",
               "type": {
@@ -184,11 +181,41 @@
               "fieldName": "plugins"
             },
             {
-              "name": "schema",
+              "name": "schemaSpec",
               "type": {
                 "text": "MappedSchemaSpec | undefined"
               },
-              "fieldName": "schema"
+              "fieldName": "schemaSpec"
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "['text']",
+              "fieldName": "path"
+            },
+            {
+              "name": "styles",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "fieldName": "styles"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string | undefined"
+              },
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "document",
+              "type": {
+                "text": "CollaborativeDocument<unknown>"
+              },
+              "fieldName": "document"
             }
           ],
           "mixins": [
@@ -220,6 +247,146 @@
           "declaration": {
             "name": "CollaborativeProsemirror",
             "module": "src/elements/collaborative-prosemirror.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/elements/readonly-prosemirror.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ReadonlyProsemirror",
+          "members": [
+            {
+              "kind": "field",
+              "name": "plugins",
+              "type": {
+                "text": "Array<Plugin<unknown>>"
+              },
+              "default": "[]",
+              "attribute": "plugins"
+            },
+            {
+              "kind": "field",
+              "name": "schemaSpec",
+              "type": {
+                "text": "MappedSchemaSpec | undefined"
+              },
+              "attribute": "schemaSpec"
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "adapter",
+              "type": {
+                "text": "SchemaAdapter"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "path",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "['text']",
+              "attribute": "path"
+            },
+            {
+              "kind": "field",
+              "name": "document",
+              "type": {
+                "text": "Automerge.Doc<unknown>"
+              },
+              "attribute": "document"
+            },
+            {
+              "kind": "field",
+              "name": "prosemirror",
+              "type": {
+                "text": "EditorView"
+              }
+            },
+            {
+              "kind": "method",
+              "name": "setupProsemirror"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "plugins",
+              "type": {
+                "text": "Array<Plugin<unknown>>"
+              },
+              "default": "[]",
+              "fieldName": "plugins"
+            },
+            {
+              "name": "schemaSpec",
+              "type": {
+                "text": "MappedSchemaSpec | undefined"
+              },
+              "fieldName": "schemaSpec"
+            },
+            {
+              "name": "path",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "['text']",
+              "fieldName": "path"
+            },
+            {
+              "name": "document",
+              "type": {
+                "text": "Automerge.Doc<unknown>"
+              },
+              "fieldName": "document"
+            },
+            {
+              "name": "styles",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "fieldName": "styles"
+            }
+          ],
+          "mixins": [
+            {
+              "name": "SignalWatcher",
+              "package": "@darksoil-studio/holochain-signals"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "readonly-prosemirror",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ReadonlyProsemirror",
+          "declaration": {
+            "name": "ReadonlyProsemirror",
+            "module": "src/elements/readonly-prosemirror.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "readonly-prosemirror",
+          "declaration": {
+            "name": "ReadonlyProsemirror",
+            "module": "src/elements/readonly-prosemirror.ts"
           }
         }
       ]

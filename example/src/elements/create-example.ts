@@ -107,7 +107,7 @@ export class CreateExample extends SignalWatcher(LitElement) {
 			>
 				<span class="title">${msg('Create Example')}</span>
 
-				<sl-textarea name="text" .label=${msg('Text')} required></sl-textarea>
+				<sl-textarea name="text" .label=${msg('Text')}></sl-textarea>
 
 				<sl-button variant="primary" type="submit" .loading=${this.committing}
 					>${msg('Create Example')}</sl-button
